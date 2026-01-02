@@ -1,12 +1,11 @@
-import { Hono } from 'hono'
+import { Hono } from "hono";
+import auth from "./routes/auth";
 
-const app = new Hono()
+const app = new Hono();
 
-app.get('/', (c) => {
-  return c.text('Hello Hono!')
-})
+app.route("/", auth);
 
 export default {
   port: 2222,
   fetch: app.fetch,
-}
+};
