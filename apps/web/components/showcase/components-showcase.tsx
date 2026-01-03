@@ -9,7 +9,13 @@ import {
 } from "@workspace/ui/components/sheet";
 import { Menu } from "lucide-react";
 import { codeSnippets } from "@/lib/showcase-code-snippets";
-import { getComponentsData } from "@/lib/showcase-data/sections-data";
+import {
+  sectionsData,
+  buttonsData,
+  formsData,
+  cardsData,
+  overlaysData,
+} from "@/lib/showcase-data";
 import {
   ComponentsSidebar,
   categories,
@@ -24,7 +30,16 @@ export function ComponentsShowcase() {
   );
   const componentRefs = React.useRef<Record<string, HTMLDivElement | null>>({});
 
-  const components = React.useMemo(() => getComponentsData(), []);
+  const components = React.useMemo(
+    () => [
+      ...sectionsData,
+      ...buttonsData,
+      ...formsData,
+      ...cardsData,
+      ...overlaysData,
+    ],
+    [],
+  );
 
   const handleComponentSelect = (id: string) => {
     setActiveComponent(id);
