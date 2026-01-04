@@ -47,9 +47,22 @@ export function CodeBlock({
           )}
         </Button>
       </div>
-      <pre className="rounded-lg bg-slate-950 p-4 overflow-x-auto border border-slate-800">
-        <code className="text-sm font-mono text-slate-100 leading-relaxed block">
-          {code}
+      <pre
+        className={`rounded-lg bg-slate-950 p-4 overflow-x-auto border border-slate-800 ${showLineNumbers ? "pl-8" : ""}`}
+      >
+        <code
+          className={`text-sm font-mono text-slate-100 leading-relaxed block ${language ? `language-${language}` : ""}`}
+        >
+          {showLineNumbers
+            ? code.split("\n").map((line, i) => (
+                <div key={i} className="table-row">
+                  <span className="table-cell text-right pr-4 text-slate-500 select-none">
+                    {i + 1}
+                  </span>
+                  <span className="table-cell">{line}</span>
+                </div>
+              ))
+            : code}
         </code>
       </pre>
     </div>

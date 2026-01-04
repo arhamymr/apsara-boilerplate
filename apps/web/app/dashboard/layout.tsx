@@ -1,10 +1,10 @@
-import { DashboardSidebar } from "@/components/dashboard/dashboard-sidebar"
-import { DashboardHeader } from "@/components/dashboard/dashboard-header"
+import { DashboardSidebar } from "@/components/dashboard/dashboard-sidebar";
+import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 
 export default function DashboardLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <div className="min-h-screen">
@@ -14,5 +14,5 @@ export default function DashboardLayout({
         <main className="p-4 md:p-6">{children}</main>
       </div>
     </div>
-  )
+  );
 }

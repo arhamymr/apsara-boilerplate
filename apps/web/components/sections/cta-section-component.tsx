@@ -38,7 +38,7 @@ export function CTASectionComponent({
 
   return (
     <section className={`py-20 md:py-32 ${backgroundColor}`}>
-      <div className="container px-4 md:px-6">
+      <div className="container px-4 md:px-6 mx-auto">
         <div className="flex flex-col items-center text-center space-y-6">
           <h2 className="text-3xl tracking-tight sm:text-4xl md:text-5xl max-w-2xl text-balance font-normal">
             {displayHeading}

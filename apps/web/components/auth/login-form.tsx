@@ -2,12 +2,13 @@
 
 import * as React from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Button } from "@workspace/ui/components/button";
 import { Input } from "@workspace/ui/components/input";
 import { Label } from "@workspace/ui/components/label";
 import { Checkbox } from "@workspace/ui/components/checkbox";
 import { Alert, AlertDescription } from "@workspace/ui/components/alert";
-import { Loader2, AlertCircle, Github, Eye, EyeOff } from "lucide-react";
+import { Loader2, AlertCircle, Eye, EyeOff } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 
 export interface LoginFormProps {
@@ -33,6 +34,7 @@ export function LoginForm({
   const [error, setError] = React.useState<string | null>(null);
   const [remember, setRemember] = React.useState(false);
   const [showPassword, setShowPassword] = React.useState(false);
+  const router = useRouter();
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -47,27 +49,53 @@ export function LoginForm({
       if (onSubmit) {
         await onSubmit(email, password, remember);
       } else {
-        // Default demo behavior
-        await new Promise((resolve) => setTimeout(resolve, 1500));
+        await authClient.signIn.email(
+          {
+            email,
+            password,
+            rememberMe: remember,
+          },
+          {
+            onRequest: () => {
+              setIsLoading(true);
+            },
+            onSuccess: () => {
+              router.push("/dashboard");
+            },
+            onError: (ctx) => {
+              setError(ctx.error.message);
+              setIsLoading(false);
+            },
+          },
+        );
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred");
-    } finally {
       setIsLoading(false);
     }
   }
 
-  const handleSocialLogin = async (provider: "github" | "google") => {
-    try {
-      setIsLoading(true);
-      await authClient.signIn.social({
-        provider,
-        callbackURL: "/dashboard", // Redirect after successful login
-      });
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Social login failed");
-      setIsLoading(false);
-    }
+  const handleGoogleLogin = async () => {
+    setIsLoading(true);
+    setError(null);
+
+    await authClient.signIn.social(
+      {
+        provider: "google",
+      },
+      {
+        onRequest: () => {
+          setIsLoading(true);
+        },
+        onSuccess: () => {
+          router.push("/dashboard");
+        },
+        onError: (ctx) => {
+          setError(ctx.error.message);
+          setIsLoading(false);
+        },
+      },
+    );
   };
 
   return (
@@ -85,17 +113,7 @@ export function LoginForm({
             type="button"
             variant="outline"
             className="w-full"
-            onClick={() => handleSocialLogin("github")}
-            disabled={isLoading}
-          >
-            <Github className="mr-2 h-4 w-4" />
-            Continue with GitHub
-          </Button>
-          <Button
-            type="button"
-            variant="outline"
-            className="w-full"
-            onClick={() => handleSocialLogin("google")}
+            onClick={handleGoogleLogin}
             disabled={isLoading}
           >
             <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">

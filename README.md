@@ -122,6 +122,32 @@ The theme is configured in `apps/web/app/layout.tsx`:
 
 Available themes: `light`, `dark`, `system`.
 
+## Global Styles
+
+Global styles are centralized in the UI package for consistency across all apps:
+
+```
+packages/ui/src/styles/globals.css
+```
+
+This file contains:
+
+- CSS custom properties (design tokens) for colors, radius, typography
+- Light and dark theme color schemes
+- Tailwind CSS v4 theme configuration
+- Base layer styles for typography and form elements
+
+Import in your app:
+
+```tsx
+// apps/web/app/layout.tsx
+import "@workspace/ui/styles/globals.css";
+```
+
+The globals.css automatically scans all components for Tailwind classes using `@source` directives.
+
+See [docs/STYLES.md](./docs/STYLES.md) for detailed styling guide.
+
 ## Deployment
 
 ### Docker Deployment (Zero Downtime)

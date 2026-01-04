@@ -44,7 +44,7 @@ export function HeroSectionComponent({
         </div>
       )}
 
-      <div className="container px-4 md:px-6">
+      <div className="container px-4 md:px-6 mx-auto">
         <div className="flex flex-col items-center text-center space-y-8">
           {badge && (
             <div className="inline-flex items-center rounded-full border px-3 py-1 text-sm text-muted-foreground">

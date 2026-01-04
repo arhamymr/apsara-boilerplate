@@ -13,7 +13,9 @@ app.use(
   "*",
   cors({
     origin: (origin) => {
-      const allowedOrigins = ["http://localhost:1111"];
+      const allowedOrigins = process.env.TRUSTED_ORIGINS?.split(",") || [
+        "http://localhost:1111",
+      ];
       return allowedOrigins.includes(origin) ? origin : origin;
     },
     allowHeaders: ["Content-Type", "Authorization"],

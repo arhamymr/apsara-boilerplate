@@ -144,15 +144,23 @@ function Component({ className, ...props }) {
 apps/web/
 ├── app/                    # Next.js App Router pages
 ├── components/             # App-specific components
-│   ├── ui/                 # Component overrides
 │   └── providers.tsx       # Context providers
 ├── hooks/                  # Custom hooks
 └── lib/                    # Utilities
 
 packages/ui/src/
-├── components/             # Shared components
+├── components/             # Shared UI components
 ├── hooks/                  # Shared hooks
 └── lib/                    # Shared utilities
+```
+
+### Shared UI Components
+
+All UI components are located in `packages/ui/src/components/`. Import them using the `@workspace/ui` alias:
+
+```typescript
+import { Button } from "@workspace/ui/components/button";
+import { Input } from "@workspace/ui/components/input";
 ```
 
 ### ESLint and Prettier
