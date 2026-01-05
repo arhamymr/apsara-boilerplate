@@ -41,6 +41,8 @@ pnpm --filter ai build
 
 # Backend (Hono)
 pnpm --filter backend dev
+pnpm --filter backend build
+pnpm --filter backend start
 
 # UI package
 pnpm --filter @workspace/ui lint

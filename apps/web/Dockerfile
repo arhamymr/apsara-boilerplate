@@ -1,11 +1,11 @@
 FROM node:22-alpine AS base
+RUN corepack enable && corepack prepare pnpm@10.4.1 --activate
 
 FROM base AS prepare
 WORKDIR /app
-RUN corepack enable && corepack prepare pnpm@10.4.1 --activate
 RUN npm install -g turbo
 COPY . .
-RUN turbo prune web --docker
+RUN turbo prune frontend --docker
 
 FROM base AS deps
 WORKDIR /app
