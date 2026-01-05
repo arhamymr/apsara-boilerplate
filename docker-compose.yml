@@ -23,7 +23,9 @@ services:
     build: ./apps/ai
 
   web:
-    build: ./apps/web
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
     ports:
       - "80:3000"
     environment:
