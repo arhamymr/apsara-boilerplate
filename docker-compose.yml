@@ -12,7 +12,9 @@ services:
       POSTGRES_DB: apsara
 
   backend:
-    build: ./apps/backend
+    build:
+      context: .
+      dockerfile: apps/backend/Dockerfile
     environment:
       DATABASE_URL: postgresql://apsara:${DB_PASSWORD}@postgres:5432/apsara
       TRUSTED_ORIGINS: ${NEXT_PUBLIC_APP_URL}
@@ -20,7 +22,9 @@ services:
       - postgres
 
   ai:
-    build: ./apps/ai
+    build:
+      context: .
+      dockerfile: apps/ai/Dockerfile
 
   web:
     build:
