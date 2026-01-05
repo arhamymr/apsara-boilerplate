@@ -23,22 +23,22 @@ log_info "Running pre-flight checks..."
 command -v docker >/dev/null 2|| { log_error "Docker not found"; exit 1; }
 command -v docker compose >/dev/null 2|| { log_error "Docker Compose not found"; exit 1; }
 
-if [ ! -f ".env.$ENVIRONMENT" ]; then
+if [ ! -f ".env" ]; then
     if [ -f ".env.example" ]; then
-        log_warn "No .env.$ENVIRONMENT found, copying from .env.example"
-        cp .env.example ".env.$ENVIRONMENT"
-        log_warn "Please edit .env.$ENVIRONMENT with your production values!"
+        log_warn "No .env file found, copying from .env.example"
+        cp .env.example .env
+        log_warn "Please edit .env with your values!"
         exit 1
     else
-        log_error "No environment file found"
+        log_error "No .env file found"
         exit 1
     fi
 fi
 
 REQUIRED_VARS=("DATABASE_URL" "BETTER_AUTH_SECRET" "NEXT_PUBLIC_APP_URL")
 for var in "${REQUIRED_VARS[@]}"; do
-    if [ -z "${!var}" ]; then
-        log_error "Required variable $var not set in .env.$ENVIRONMENT"
+    if ! grep -q "^${var}=" .env 2>/dev/null; then
+        log_error "Required variable $var not set in .env"
         exit 1
     fi
 done
