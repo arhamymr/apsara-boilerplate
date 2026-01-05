@@ -47,7 +47,7 @@ log_info "Pre-flight checks passed"
 log_step "Stopping existing containers..."
 docker compose down --remove-orphans 2>/dev/null || true
 
-log_step "Building Docker images (using turbo prune for caching)..."
+log_step "Building Docker images..."
 docker compose build --no-cache
 
 log_step "Starting services..."

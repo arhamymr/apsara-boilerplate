@@ -50,9 +50,12 @@ app.get("/", (c) => {
     endpoints: {
       auth: "/api/auth",
       docs: "/api/docs",
+      health: "/health",
     },
   });
 });
+
+app.get("/health", (c) => c.json({ status: "ok" }));
 
 app.get("/api/protected", (c) => {
   const user = c.get("user");
