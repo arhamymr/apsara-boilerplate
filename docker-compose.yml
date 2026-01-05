@@ -1,44 +1,28 @@
 version: "3.8"
 
 services:
-  postgres:
-    image: postgres:16-alpine
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-      - ./apps/web/scripts/init-db.sql:/docker-entrypoint-initdb.d/init.sql
-    environment:
-      POSTGRES_USER: apsara
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DB: apsara
-
   backend:
     build:
       context: .
-      dockerfile: apps/backend/Dockerfile
+      dockerfile: Dockerfile.backend
     environment:
-      DATABASE_URL: postgresql://apsara:${DB_PASSWORD}@postgres:5432/apsara
+      DATABASE_URL: ${DATABASE_URL}
       TRUSTED_ORIGINS: ${NEXT_PUBLIC_APP_URL}
-    depends_on:
-      - postgres
 
   ai:
     build:
       context: .
-      dockerfile: apps/ai/Dockerfile
+      dockerfile: Dockerfile.ai
 
   web:
     build:
       context: .
-      dockerfile: apps/web/Dockerfile
+      dockerfile: Dockerfile.web
     ports:
       - "80:3000"
     environment:
       NEXT_PUBLIC_API_URL: http://backend:2222
       NEXT_PUBLIC_APP_URL: ${NEXT_PUBLIC_APP_URL}
-      DATABASE_URL: postgresql://apsara:${DB_PASSWORD}@postgres:5432/apsara
+      DATABASE_URL: ${DATABASE_URL}
     depends_on:
       - backend
-      - postgres
-
-volumes:
-  postgres_data:

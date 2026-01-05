@@ -1,11 +1,10 @@
 #!/bin/bash
 set -e
 
-ENVIRONMENT=${1:-production}
 PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$PROJECT_DIR"
 
-echo "🚀 Deploying Apsara Devkit ($ENVIRONMENT)"
+echo "🚀 Deploying Apsara Devkit"
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -45,46 +44,47 @@ done
 
 log_info "Pre-flight checks passed"
 
-log_step "Building Docker images (zero-downtime deployment)..."
-docker compose -f docker-compose.yml build --no-cache
+log_step "Stopping existing containers..."
+docker compose down --remove-orphans 2>/dev/null || true
 
-log_info "Updating services (minimal downtime during container restart)..."
-docker compose -f docker-compose.yml up -d --force-recreate
+log_step "Building Docker images..."
+docker compose build --no-cache
+
+log_step "Starting services..."
+docker compose up -d
 
 log_info "Waiting for services to be healthy..."
-sleep 10
+sleep 15
 
-log_step "Cleaning up old Docker artifacts (after successful deployment)..."
-docker image prune -f > /dev/null 2>&1 || true
-docker builder prune -f > /dev/null 2>&1 || true
-
-log_info "Running health checks..."
+log_step "Running health checks..."
 HEALTHY=true
 
 if curl -sf "http://localhost:80" > /dev/null 2>&1; then
-    log_info "Web is healthy"
+    log_info "✓ Web is healthy (port 80)"
 else
-    log_warn "Web may not be responding at http://localhost:80"
+    log_warn "✗ Web may not be responding (port 80)"
     HEALTHY=false
 fi
 
-log_info "Deployment complete!"
-echo ""
-echo "Container status:"
+if curl -sf "http://localhost:2222/health" > /dev/null 2>&1 || curl -sf "http://localhost:2222" > /dev/null 2>&1; then
+    log_info "✓ Backend is healthy (port 2222)"
+else
+    log_warn "✗ Backend may not be responding (port 2222)"
+fi
+
+log_info "Container status:"
 docker compose ps
 
 echo ""
-echo "Disk usage:"
-df -h | grep -E "^/dev/" | awk '{print $1 " " $3 "/" $2 " (" $5 ")"}'
-
 if [ "$HEALTHY" = true ]; then
-    log_info "✅ All services are healthy!"
+    log_info "✅ Deployment successful!"
 else
-    log_warn "⚠️  Some services may need attention. Check logs with: docker compose logs"
+    log_warn "⚠️  Some services may need attention"
+    log_info "Check logs with: docker compose logs"
 fi
 
 echo ""
 log_info "Useful commands:"
 echo "  View logs:    docker compose logs -f"
 echo "  Stop:         docker compose down"
-echo "  Full cleanup: docker system prune -a"
+echo "  Restart:      docker compose restart"
