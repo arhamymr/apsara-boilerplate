@@ -2,7 +2,7 @@ FROM oven/bun:1-alpine
 WORKDIR /app
 
 COPY . .
-RUN corepack enable && corepack prepare pnpm@10.4.1 --activate
+RUN npm install -g pnpm@10.4.1
 RUN pnpm install --frozen-lockfile
 
 EXPOSE 2222
