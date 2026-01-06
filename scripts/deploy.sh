@@ -44,8 +44,8 @@ done
 
 log_info "Pre-flight checks passed"
 
-log_step "Stopping existing containers..."
-docker compose down --remove-orphans 2>/dev/null || true
+log_step "Running cleanup to free ports..."
+./scripts/cleanup.sh
 
 log_step "Building Docker images..."
 docker compose build --no-cache
