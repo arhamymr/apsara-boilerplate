@@ -8,7 +8,7 @@ import {
   SheetTrigger,
 } from "@workspace/ui/components/sheet";
 import { Menu } from "lucide-react";
-import { codeSnippets } from "@/lib/showcase-code-snippets";
+import { codeSnippets } from "@/lib/code-snippets";
 import {
   sectionsData,
   buttonsData,
