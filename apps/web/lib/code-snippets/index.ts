@@ -157,4 +157,147 @@ export default function LoadingButton() {
     </Button>
   )
 }`,
+
+  "text-input": `import { Input } from "@workspace/ui/components/input"
+import { Label } from "@workspace/ui/components/label"
+
+export default function TextInput() {
+  return (
+    <div className="space-y-2">
+      <Label htmlFor="email">Email</Label>
+      <Input id="email" type="email" placeholder="Enter your email" />
+    </div>
+  )
+}`,
+
+  textarea: `import { Textarea } from "@workspace/ui/components/textarea"
+import { Label } from "@workspace/ui/components/label"
+
+export default function TextareaDemo() {
+  return (
+    <div className="space-y-2">
+      <Label htmlFor="message">Message</Label>
+      <Textarea id="message" placeholder="Type your message here" />
+    </div>
+  )
+}`,
+
+  checkbox: `import { Checkbox } from "@workspace/ui/components/checkbox"
+import { Label } from "@workspace/ui/components/label"
+
+export default function CheckboxDemo() {
+  return (
+    <div className="flex items-center space-x-2">
+      <Checkbox id="terms" />
+      <Label htmlFor="terms">Accept terms and conditions</Label>
+    </div>
+  )
+}`,
+
+  switch: `import { Switch } from "@workspace/ui/components/switch"
+import { Label } from "@workspace/ui/components/label"
+
+export default function SwitchDemo() {
+  return (
+    <div className="flex items-center space-x-2">
+      <Switch id="airplane-mode" />
+      <Label htmlFor="airplane-mode">Airplane Mode</Label>
+    </div>
+  )
+}`,
+
+  slider: `import { Slider } from "@workspace/ui/components/slider"
+
+export default function SliderDemo() {
+  return <Slider defaultValue={[50]} max={100} step={1} className="w-[60%]" />
+}`,
+
+  select: `import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@workspace/ui/components/select"
+
+export default function SelectDemo() {
+  return (
+    <Select>
+      <SelectTrigger className="w-[180px]">
+        <SelectValue placeholder="Select a fruit" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectItem value="apple">Apple</SelectItem>
+        <SelectItem value="banana">Banana</SelectItem>
+        <SelectItem value="orange">Orange</SelectItem>
+      </SelectContent>
+    </Select>
+  )
+}`,
+
+  "radio-group": `import {
+  RadioGroup,
+  RadioGroupItem,
+} from "@workspace/ui/components/radio-group"
+import { Label } from "@workspace/ui/components/label"
+
+export default function RadioGroupDemo() {
+  return (
+    <RadioGroup defaultValue="comfortable">
+      <div className="flex items-center space-x-2">
+        <RadioGroupItem value="default" id="r1" />
+        <Label htmlFor="r1">Default</Label>
+      </div>
+      <div className="flex items-center space-x-2">
+        <RadioGroupItem value="comfortable" id="r2" />
+        <Label htmlFor="r2">Comfortable</Label>
+      </div>
+      <div className="flex items-center space-x-2">
+        <RadioGroupItem value="compact" id="r3" />
+        <Label htmlFor="r3">Compact</Label>
+      </div>
+    </RadioGroup>
+  )
+}`,
+
+  "input-otp": `import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+  InputOTPSeparator,
+} from "@workspace/ui/components/input-otp"
+
+export default function InputOTPDemo() {
+  return (
+    <InputOTP maxLength={6}>
+      <InputOTPGroup>
+        <InputOTPSlot index={0} />
+        <InputOTPSlot index={1} />
+        <InputOTPSlot index={2} />
+      </InputOTPGroup>
+      <InputOTPSeparator />
+      <InputOTPGroup>
+        <InputOTPSlot index={3} />
+        <InputOTPSlot index={4} />
+        <InputOTPSlot index={5} />
+      </InputOTPGroup>
+    </InputOTP>
+  )
+}`,
+
+  calendar: `import * as React from "react"
+import { Calendar } from "@workspace/ui/components/calendar"
+
+export default function CalendarDemo() {
+  const [date, setDate] = React.useState<Date | undefined>(new Date())
+
+  return (
+    <Calendar
+      mode="single"
+      selected={date}
+      onSelect={setDate}
+      className="rounded-md border"
+    />
+  )
+}`,
 };
