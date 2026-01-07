@@ -26,5 +26,3 @@ services:
       - NEXT_PUBLIC_API_URL=http://backend:2222
       - NEXT_PUBLIC_APP_URL=${NEXT_PUBLIC_APP_URL}
       - DATABASE_URL=${DATABASE_URL}
-    depends_on:
-      - backend
