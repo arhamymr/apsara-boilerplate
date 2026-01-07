@@ -9,11 +9,11 @@ RUN turbo prune ai --docker
 
 COPY . .
 
-FROM node:20-slim  AS builder
+FROM node:22-slim  AS builder
 WORKDIR /app
 RUN corepack enable
 COPY --from=prepare /app/out/json/ .
-RUN pnpm install --frozen-lockfile
+RUN pnpm install
 
 # build the project
 COPY --from=prepare /app/out/full/ .
@@ -28,10 +28,10 @@ RUN addgroup --system --gid 1001 mastraai
 RUN adduser --system --uid 1001 mastraai
 USER mastraai
 
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/apps/ai ./apps/ai
+COPY --from=builder /app/apps/ai/node_modules ./node_modules
+COPY --from=builder /app/apps/ai/.mastra ./.mastra
 
-WORKDIR /app/apps/ai
+WORKDIR /app
 EXPOSE 3333
 
-CMD ["bun", "start"]
+CMD ["bun", "run", ".mastra/start"]
