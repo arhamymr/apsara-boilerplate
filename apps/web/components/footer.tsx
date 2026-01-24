@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
-import Link from "next/link"
-import { useTheme } from "next-themes"
-import { useEffect, useState } from "react"
+import Link from "next/link";
+import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
 
 const footerLinks = {
   product: [
@@ -23,21 +23,21 @@ const footerLinks = {
     { name: "Privacy", href: "#" },
     { name: "Terms", href: "#" },
   ],
-}
+};
 
 export function Footer() {
-  const { theme, resolvedTheme } = useTheme()
-  const [mounted, setMounted] = useState(false)
+  const { theme, resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true)
-  }, [])
+    setMounted(true);
+  }, []);
 
-  const currentTheme = mounted ? resolvedTheme || theme : "light"
+  const currentTheme = mounted ? resolvedTheme || theme : "light";
   const logoSrc =
     currentTheme === "dark"
-      ? "https://assets.apsaradigital.com/logo-ui-kit-white.png"
-      : "https://assets.apsaradigital.com/logo-ui-kit.png"
+      ? "https://assets.apsaradigital.com/devkit-logo-white.png"
+      : "https://assets.apsaradigital.com/devkit-logo.png";
 
   return (
     <footer className="border-t bg-card">
@@ -45,10 +45,15 @@ export function Footer() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           <div className="col-span-2 md:col-span-1">
             <Link href="/" className="flex items-center gap-2 mb-4">
-              <img src={logoSrc || "/placeholder.svg"} alt="UIKit Logo" className="h-5 w-auto object-contain" />
+              <img
+                src={logoSrc || "/placeholder.svg"}
+                alt="UIKit Logo"
+                className="h-5 w-auto object-contain"
+              />
             </Link>
             <p className="text-sm text-muted-foreground max-w-xs">
-              A comprehensive UI template system for building modern web applications.
+              A comprehensive UI template system for building modern web
+              applications.
             </p>
           </div>
 
@@ -102,20 +107,31 @@ export function Footer() {
         </div>
 
         <div className="border-t mt-12 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-sm text-muted-foreground">© {new Date().getFullYear()} UIKit. All rights reserved.</p>
+          <p className="text-sm text-muted-foreground">
+            © {new Date().getFullYear()} UIKit. All rights reserved.
+          </p>
           <div className="flex items-center gap-4">
-            <Link href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+            <Link
+              href="#"
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+            >
               Twitter
             </Link>
-            <Link href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+            <Link
+              href="#"
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+            >
               GitHub
             </Link>
-            <Link href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+            <Link
+              href="#"
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+            >
               Discord
             </Link>
           </div>
         </div>
       </div>
     </footer>
-  )
+  );
 }

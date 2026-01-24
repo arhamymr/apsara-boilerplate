@@ -150,66 +150,153 @@ See [docs/STYLES.md](./docs/STYLES.md) for detailed styling guide.
 
 ## Deployment
 
-### Docker Deployment (Zero Downtime)
+This project supports Docker-based deployment for production environments. All applications run in isolated containers with internal networking.
 
-This project includes a complete Docker deployment setup for production VPS deployments.
-
-#### Architecture
+### Architecture
 
 ```
-Cloudflare DNS → VPS :80 → Web Container (:3000) [Public]
-                                ├──→ Backend (:2222) [Internal]
-                                ├──→ AI (:3333) [Internal]
-                                └──→ PostgreSQL (:5432) [Internal]
+Internet → Cloudflare → VPS :80 → Nginx (optional) → Docker Web (:3000) [Public]
+                                                           ├──→ Backend (:2222) [Internal]
+                                                           ├──→ AI (:3333) [Internal]
+                                                           └──→ PostgreSQL (:5432) [Optional]
 ```
 
-#### Prerequisites
+### Port Mapping
 
-- Docker Engine 24+
-- Docker Compose v2
-- 2GB+ RAM available
-- 10GB+ disk space
+| Service | Container Port | External Port | Exposure |
+| ------- | -------------- | ------------- | -------- |
+| Web     | 3000           | 80            | Public   |
+| Backend | 2222           | Internal only | Private  |
+| AI      | 3333           | Internal only | Private  |
 
-#### Quick Deploy
+### Docker Configuration by App
+
+#### Web App (`apps/web/Dockerfile`)
+
+- **Base Image**: Node.js 22-slim
+- **Build Strategy**: Multi-stage with Turborepo prune for optimized builds
+- **Standalone Output**: Uses Next.js standalone mode for minimal image size
+- **Security**: Runs as non-root user `nextjs` (uid 1001)
+- **Exposed Port**: 3000 (internal)
+- **Start Command**: `node apps/web/server.js`
+
+```dockerfile
+# Build stages: prepare → builder → runner
+# Optimized for layer caching and minimal image size
+```
+
+#### Backend (`apps/backend/Dockerfile`)
+
+- **Base Image**: Bun (Alpine)
+- **Build Strategy**: Turbo prune with Node.js 22-slim builder
+- **Security**: Runs as non-root user `backend` (uid 1001)
+- **Exposed Port**: 2222 (internal)
+- **Start Command**: `bun start`
+
+#### AI App (`apps/ai/Dockerfile`)
+
+- **Base Image**: Bun (Alpine)
+- **Build Strategy**: Multi-stage with Turborepo prune
+- **Security**: Runs as non-root user `mastraai` (uid 1001)
+- **Exposed Port**: 3333 (internal)
+- **Start Command**: `bun run .mastra/start`
+
+### Docker Compose Services
+
+```yaml
+services:
+  web:
+    build: apps/web/Dockerfile
+    ports: ["80:3000"] # Public-facing
+    environment:
+      - NEXT_PUBLIC_API_URL=http://backend:2222
+      - NEXT_PUBLIC_APP_URL=${NEXT_PUBLIC_APP_URL}
+      - DATABASE_URL=${DATABASE_URL}
+
+  backend:
+    build: apps/backend/Dockerfile
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+      - TRUSTED_ORIGINS=${NEXT_PUBLIC_APP_URL}
+
+  ai:
+    build: apps/ai/Dockerfile
+```
+
+### Environment Variables
+
+Create `.env.production` from the template:
 
 ```bash
-# 1. Clone and navigate to the project
-git clone <your-repo>
-cd apsara-devkit
-
-# 2. Create environment file
 cp .env.production .env.production
-# Edit .env.production with your values
+```
 
-# 3. Make deploy script executable
-chmod +x scripts/deploy.sh
+Required variables:
 
-# 4. Deploy (zero-downtime)
+| Variable              | Description                                     |
+| --------------------- | ----------------------------------------------- |
+| `NEXT_PUBLIC_APP_URL` | Production domain (e.g., `https://example.com`) |
+| `DATABASE_URL`        | PostgreSQL connection string                    |
+| `DB_PASSWORD`         | Database password                               |
+| `BETTER_AUTH_SECRET`  | Auth key (`openssl rand -base64 32`)            |
+
+### Deployment Scripts
+
+#### deploy.sh
+
+Main deployment script that performs zero-downtime deployment:
+
+```bash
 ./scripts/deploy.sh production
 ```
 
-#### Zero-Downtime Deployment Strategy
+**Steps executed:**
 
-The deploy script uses a zero-downtime strategy:
+1. Pre-flight checks (Docker, Docker Compose)
+2. Run cleanup script
+3. Build all Docker images with `--no-cache`
+4. Start services with `docker compose up -d`
+5. Wait 15 seconds for services to initialize
+6. Health checks on ports 80 (web) and 2222 (backend)
+7. Report container status
 
-1. **Build Phase**: Build new Docker images while services continue running
-2. **Deploy Phase**: Recreate containers with new images (minimal downtime during restart)
-3. **Cleanup Phase**: Remove old images after successful deployment
+**Health check endpoints:**
 
-This ensures your application stays available during most of the deployment process.
+- Web: `http://localhost:80`
+- Backend: `http://localhost:2222/health` or `http://localhost:2222`
 
-#### Required Environment Variables
+#### cleanup.sh
 
-| Variable              | Description                                             |
-| --------------------- | ------------------------------------------------------- |
-| `NEXT_PUBLIC_APP_URL` | Your production domain (e.g., `https://yourdomain.com`) |
-| `DB_PASSWORD`         | PostgreSQL password                                     |
-| `BETTER_AUTH_SECRET`  | Auth encryption key (`openssl rand -base64 32`)         |
-| `DATABASE_URL`        | PostgreSQL connection string                            |
+Cleans up Docker artifacts and frees required ports:
 
-See `.env.production` for the complete template.
+```bash
+./scripts/cleanup.sh
+```
 
-#### Manual Docker Commands
+**Actions performed:**
+
+1. Stop and remove all Docker containers
+2. Remove Docker networks
+3. Kill processes on ports 80, 3000, 2222
+4. Prune unused Docker images and volumes
+5. Full Docker system cleanup
+
+### Quick Deploy
+
+```bash
+# 1. Setup environment
+cp .env.production .env.production
+# Edit .env.production with your values
+
+# 2. Make scripts executable
+chmod +x scripts/deploy.sh
+chmod +x scripts/cleanup.sh
+
+# 3. Deploy
+./scripts/deploy.sh production
+```
+
+### Manual Docker Commands
 
 ```bash
 # Build all images
@@ -221,15 +308,30 @@ docker compose up -d
 # View logs
 docker compose logs -f
 
+# View logs for specific service
+docker compose logs -f web
+docker compose logs -f backend
+docker compose logs -f ai
+
 # Stop services
 docker compose down
 
-# Full cleanup (removes all containers, networks, and images)
+# Full cleanup
 docker compose down --remove-orphans
 docker system prune -a -f
 ```
 
-#### Cloudflare DNS Setup
+### Zero-Downtime Deployment Strategy
+
+The deploy script uses a strategy that minimizes downtime:
+
+1. **Build Phase**: Build new images while services continue running
+2. **Deploy Phase**: Recreate containers with new images (only brief restart downtime)
+3. **Cleanup Phase**: Remove old images after successful deployment
+
+For true zero-downtime with rolling updates, configure your reverse proxy with health checks before updating containers.
+
+### Cloudflare DNS Setup
 
 Create an A record pointing to your VPS IP:
 
@@ -237,15 +339,35 @@ Create an A record pointing to your VPS IP:
 | ---- | ---- | ----------- |
 | A    | @    | YOUR_VPS_IP |
 
-### Build for Production
+For subdomains:
+
+| Type | Name | Value       |
+| ---- | ---- | ----------- |
+| A    | api  | YOUR_VPS_IP |
+| A    | ai   | YOUR_VPS_IP |
+
+### Troubleshooting
 
 ```bash
-pnpm build
+# Check container status
+docker compose ps
+
+# Check container logs
+docker compose logs -f
+
+# Check if ports are in use
+lsof -i :80
+lsof -i :2222
+
+# Restart specific service
+docker compose restart web
+docker compose restart backend
+docker compose restart ai
+
+# Rebuild single service
+docker compose build --no-cache web
+docker compose up -d web
 ```
-
-### Docker (Legacy)
-
-Docker configurations will be added for containerized deployments.
 
 ## Tech Stack
 
