@@ -1,0 +1,49 @@
+{
+  "id": "blog",
+  "version": "1.0.0",
+  "name": "Blog",
+  "description": "Blog posts, categories, tags, and author pages with markdown support",
+  "apps": ["web", "backend"],
+  "features": ["posts", "categories", "tags", "authors", "markdown"],
+  "requires": ["auth"],
+  "optionalFor": ["comments"],
+  "config": {
+    "web": {
+      "dependencies": [
+        "react-markdown",
+        "remark-gfm",
+        "date-fns",
+        "reading-time"
+      ],
+      "devDependencies": []
+    },
+    "backend": {
+      "dependencies": ["drizzle-orm", "@libsql/client"],
+      "devDependencies": []
+    }
+  },
+  "db": {
+    "requiresTables": ["posts", "categories", "tags", "post_tags", "authors"],
+    "adapterPattern": "repository",
+    "migrations": ["blog"]
+  },
+  "exposes": {
+    "web": {
+      "components": [
+        "BlogList",
+        "BlogPost",
+        "BlogCard",
+        "CategoryFilter",
+        "TagFilter",
+        "AuthorBio"
+      ],
+      "hooks": ["usePosts", "usePost", "useCategories", "useTags"],
+      "types": ["Post", "Category", "Tag", "Author", "BlogPostInput"]
+    },
+    "backend": {
+      "routes": ["/api/posts/**", "/api/categories/**", "/api/tags/**"],
+      "middleware": [],
+      "services": ["blogService"]
+    }
+  }
+}

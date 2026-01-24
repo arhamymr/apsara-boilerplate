@@ -1,0 +1,62 @@
+{
+  "id": "auth",
+  "version": "1.0.0",
+  "name": "Authentication",
+  "description": "Email/password authentication with session management and password reset",
+  "apps": ["web", "backend"],
+  "features": ["login", "register", "forgot-password", "session", "logout"],
+  "requires": [],
+  "optionalFor": ["dashboard", "user-profile", "blog", "cms"],
+  "config": {
+    "web": {
+      "dependencies": [
+        "better-auth",
+        "zod",
+        "@hookform/resolvers",
+        "react-hook-form"
+      ],
+      "devDependencies": [],
+      "envVars": {
+        "required": ["BETTER_AUTH_SECRET"],
+        "optional": ["GOOGLE_CLIENT_ID", "GOOGLE_CLIENT_SECRET"]
+      }
+    },
+    "backend": {
+      "dependencies": ["better-auth", "drizzle-orm", "@libsql/client"],
+      "devDependencies": ["@types/better-auth"],
+      "envVars": {
+        "required": ["BETTER_AUTH_SECRET", "DATABASE_URL"],
+        "optional": ["GOOGLE_CLIENT_ID", "GOOGLE_CLIENT_SECRET"]
+      }
+    }
+  },
+  "db": {
+    "requiresTables": ["users", "sessions", "accounts", "verification"],
+    "adapterPattern": "repository",
+    "migrations": ["auth"]
+  },
+  "exposes": {
+    "web": {
+      "components": [
+        "LoginForm",
+        "RegisterForm",
+        "ForgotPasswordForm",
+        "AuthProvider",
+        "AuthLayout"
+      ],
+      "hooks": [
+        "useAuth",
+        "useSession",
+        "useLogin",
+        "useRegister",
+        "useLogout"
+      ],
+      "types": ["User", "Session", "LoginCredentials", "RegisterInput"]
+    },
+    "backend": {
+      "routes": ["/api/auth/**"],
+      "middleware": ["authenticate", "optionalAuth"],
+      "services": ["authService"]
+    }
+  }
+}

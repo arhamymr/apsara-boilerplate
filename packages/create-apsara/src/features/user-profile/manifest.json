@@ -1,0 +1,42 @@
+{
+  "id": "user-profile",
+  "version": "1.0.0",
+  "name": "User Profile",
+  "description": "Account settings, profile management, and avatar upload",
+  "apps": ["web", "backend"],
+  "features": ["profile", "settings", "avatar", "password-change"],
+  "requires": ["auth"],
+  "optionalFor": [],
+  "config": {
+    "web": {
+      "dependencies": ["react-dropzone", "lucide-react"],
+      "devDependencies": []
+    },
+    "backend": {
+      "dependencies": ["drizzle-orm"],
+      "devDependencies": []
+    }
+  },
+  "db": {
+    "requiresTables": [],
+    "adapterPattern": "repository",
+    "migrations": []
+  },
+  "exposes": {
+    "web": {
+      "components": [
+        "ProfilePage",
+        "SettingsPage",
+        "AvatarUploader",
+        "PasswordChangeForm"
+      ],
+      "hooks": ["useProfile", "useSettings", "useAvatarUpload"],
+      "types": ["ProfileData", "SettingsData", "UserUpdateInput"]
+    },
+    "backend": {
+      "routes": ["/api/profile/**", "/api/settings/**"],
+      "middleware": [],
+      "services": ["profileService"]
+    }
+  }
+}

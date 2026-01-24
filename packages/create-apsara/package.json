@@ -1,0 +1,47 @@
+{
+  "name": "@apsara/create-apsara",
+  "version": "0.0.1",
+  "description": "Generate modular web application projects with feature selection",
+  "type": "module",
+  "bin": {
+    "create-apsara": "./bin/create-apsara.js"
+  },
+  "files": [
+    "bin",
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "start": "node bin/create-apsara.js",
+    "test": "echo \"No tests specified\" && exit 0"
+  },
+  "keywords": [
+    "cli",
+    "generator",
+    "scaffold",
+    "template",
+    "nextjs",
+    "monorepo",
+    "turborepo"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@clack/prompts": "^0.9.0",
+    "commander": "^12.1.0",
+    "fs-extra": "^11.2.0",
+    "gradient-string": "^2.0.2",
+    "handlebars": "^4.7.8",
+    "ora": "^8.1.0",
+    "picocolors": "^1.1.1",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.4",
+    "@types/gradient-string": "^1.1.6",
+    "@types/node": "^20.11.0",
+    "typescript": "^5.7.3"
+  }
+}
