@@ -8,7 +8,7 @@ import { Button } from "@workspace/ui/components/button";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Github } from "lucide-react";
 
-const navItems = [{ name: "Docs", href: "/docs" }];
+const navItems: { name: string; href: string }[] = [];
 
 export function DesktopNav() {
   const pathname = usePathname();
@@ -39,19 +39,19 @@ export function DesktopNav() {
 
       <div className="hidden md:flex items-center gap-2">
         <Button variant="ghost" size="sm" asChild>
-          <Link href="/login">Log in (demo)</Link>
-        </Button>
-        <Button size="sm" asChild>
-          <Link
-            href="https://github.com/arhamymr/apsara-devkit"
+          <Link href="https://github.com/arhamymr/apsara-devkit"
             target="_blank"
-            rel="noopener noreferrer"
+            rel="noopener noreferrer">Log in (demo)</Link>
+        </Button>
+        <Button asChild>
+          <Link
+            href="/login"
           >
             <Github className="h-4 w-4 mr-2" />
-            GitHub
+            Login (Demo Feature)
           </Link>
         </Button>
-      </div>
+      </div >
     </>
   );
 }
