@@ -9,18 +9,18 @@ import { ArrowRight, Github, Play } from "lucide-react";
 
 export function HeroSection() {
   return (
-    <section className="relative overflow-hidden py-20">
+    <section className="relative overflow-hidden">
       <div className="container mx-auto">
-        <div className="mx-auto">
+        <div className="mx-auto p-6">
           <Card className="w-full">
             <CardContent className="p-8 md:p-12 text-center max-w-4xl mx-auto">
               <Badge variant="secondary" className="mb-4">
                 Modern Web Development Boilerplate
               </Badge>
-              <h1 className="text-4xl tracking-tight text-foreground sm:text-5xl md:text-6xl lg:text-7xl">
-                Apsara React Boilerplate
+              <h1 className="text-4xl text-foreground md:text-6xl lg:text-7xl">
+                Web Application Boilerplate
               </h1>
-              <p className="mt-6 text-lg leading-8 text-muted-foreground sm:text-xl sm:leading-9">
+              <p className="mt-6 text-sm leading-8 text-muted-foreground md:text-xl md:leading-9">
                 A comprehensive modern web application template built with
                 Next.js 16, React 19, and TypeScript. This monorepo includes a
                 production-ready frontend, backend API, AI agent integration,

@@ -125,12 +125,6 @@ pnpm dlx shadcn@latest add button -c apps/web"
               </div>
             </CardContent>
           </Card>
-
-          <div className="mt-8 text-center">
-            <Button size="lg" className="gap-1">
-              <Play className="h-4 w-4" /> Get Started Now
-            </Button>
-          </div>
         </div>
       </div>
     </section>
