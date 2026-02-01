@@ -9,8 +9,8 @@ export default function HomePage() {
   return (
     <div className="flex flex-col">
       <HeroSection />
-      <FeaturesSection />
       <TechStackSection />
+       <FeaturesSection />
       <QuickstartSection />
       <CTASection />
     </div>

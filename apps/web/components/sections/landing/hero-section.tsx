@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Button } from "@workspace/ui/components/button";
 import { Badge } from "@workspace/ui/components/badge";
 import { Card, CardContent } from "@workspace/ui/components/card";
-import { ArrowRight, Github, Play } from "lucide-react";
+import { ArrowRight, Github, Play, Zap } from "lucide-react";
 
 export function HeroSection() {
   return (
@@ -14,11 +14,12 @@ export function HeroSection() {
         <div className="mx-auto p-6">
           <Card className="w-full">
             <CardContent className="p-8 md:p-12 text-center max-w-4xl mx-auto">
-              <Badge variant="secondary" className="mb-4">
+              <Badge variant="secondary" className="mb-6 gap-1">
+                <Zap className="h-3 w-3" />
                 Modern Web Development Boilerplate
               </Badge>
               <h1 className="text-4xl text-foreground md:text-6xl lg:text-7xl">
-                Web Application Boilerplate
+                React Boilerplate
               </h1>
               <p className="mt-6 text-sm leading-8 text-muted-foreground md:text-xl md:leading-9">
                 A comprehensive modern web application template built with
@@ -27,11 +28,6 @@ export function HeroSection() {
                 and a shared UI component library.
               </p>
               <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
-                <Button size="lg" asChild className="gap-1">
-                  <Link href="/docs">
-                    Get Started <ArrowRight className="h-4 w-4" />
-                  </Link>
-                </Button>
                 <Button variant="outline" size="lg" className="gap-1" asChild>
                   <Link
                     href="https://github.com/arhamymr/apsara-devkit"

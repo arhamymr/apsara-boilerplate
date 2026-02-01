@@ -1,17 +1,20 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { cn } from "@/lib/utils"
-import { Button } from "@workspace/ui/components/button"
-import { ScrollArea } from "@workspace/ui/components/scroll-area"
-import { Sheet, SheetContent, SheetTrigger } from "@workspace/ui/components/sheet"
+import * as React from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
+import { Button } from "@workspace/ui/components/button";
+import { ScrollArea } from "@workspace/ui/components/scroll-area";
+import {
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+} from "@workspace/ui/components/sheet";
 import {
   LayoutDashboard,
   BarChart3,
   Users,
-  FileText,
   Settings,
   HelpCircle,
   Menu,
@@ -20,7 +23,7 @@ import {
   Bell,
   FolderOpen,
   X,
-} from "lucide-react"
+} from "lucide-react";
 
 const sidebarItems = [
   { name: "Overview", href: "/dashboard", icon: LayoutDashboard },
@@ -29,17 +32,16 @@ const sidebarItems = [
   { name: "Projects", href: "/dashboard/projects", icon: FolderOpen },
   { name: "Components", href: "/dashboard/components", icon: Layers },
   { name: "Notifications", href: "/dashboard/notifications", icon: Bell },
-]
+];
 
 const bottomItems = [
-  { name: "Documentation", href: "/dashboard/docs", icon: FileText },
   { name: "Settings", href: "/dashboard/settings", icon: Settings },
   { name: "Help", href: "/dashboard/help", icon: HelpCircle },
-]
+];
 
 export function DashboardSidebar() {
-  const pathname = usePathname()
-  const [open, setOpen] = React.useState(false)
+  const pathname = usePathname();
+  const [open, setOpen] = React.useState(false);
 
   const SidebarContent = () => (
     <div className="flex h-full flex-col">
@@ -55,7 +57,7 @@ export function DashboardSidebar() {
       <ScrollArea className="flex-1 py-4">
         <nav className="grid gap-1 px-2">
           {sidebarItems.map((item) => {
-            const isActive = pathname === item.href
+            const isActive = pathname === item.href;
             return (
               <Link
                 key={item.name}
@@ -71,7 +73,7 @@ export function DashboardSidebar() {
                 <item.icon className="h-5 w-5" />
                 {item.name}
               </Link>
-            )
+            );
           })}
         </nav>
       </ScrollArea>
@@ -79,7 +81,7 @@ export function DashboardSidebar() {
       <div className="border-t p-2">
         <nav className="grid gap-1">
           {bottomItems.map((item) => {
-            const isActive = pathname === item.href
+            const isActive = pathname === item.href;
             return (
               <Link
                 key={item.name}
@@ -95,12 +97,12 @@ export function DashboardSidebar() {
                 <item.icon className="h-5 w-5" />
                 {item.name}
               </Link>
-            )
+            );
           })}
         </nav>
       </div>
     </div>
-  )
+  );
 
   return (
     <>
@@ -112,18 +114,27 @@ export function DashboardSidebar() {
       {/* Mobile Sidebar */}
       <Sheet open={open} onOpenChange={setOpen}>
         <SheetTrigger asChild>
-          <Button variant="ghost" size="icon" className="fixed left-4 top-4 z-40 lg:hidden">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="fixed left-4 top-4 z-40 lg:hidden"
+          >
             <Menu className="h-5 w-5" />
             <span className="sr-only">Toggle sidebar</span>
           </Button>
         </SheetTrigger>
         <SheetContent side="left" className="w-64 p-0 bg-sidebar">
-          <Button variant="ghost" size="icon" className="absolute right-2 top-2" onClick={() => setOpen(false)}>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="absolute right-2 top-2"
+            onClick={() => setOpen(false)}
+          >
             <X className="h-5 w-5" />
           </Button>
           <SidebarContent />
         </SheetContent>
       </Sheet>
     </>
-  )
+  );
 }

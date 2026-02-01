@@ -1,10 +1,12 @@
 import type React from "react";
 import type { Metadata, Viewport } from "next";
 
-import { Analytics } from "@vercel/analytics/next";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import "@workspace/ui/styles/globals.css";
 import { QueryProvider } from "@/components/providers/query-provider";
+import { MainNav } from "@/components/navigation/main-nav";
+import { Footer } from "@/components/footer";
 
 import {
   Geist,
@@ -86,9 +88,15 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className="font-sans antialiased">
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-          <QueryProvider>{children}</QueryProvider>
+          <QueryProvider>
+            <div className="flex min-h-screen flex-col">
+              <MainNav />
+              <main className="flex-1">{children}</main>
+              <Footer />
+            </div>
+          </QueryProvider>
         </ThemeProvider>
-        <Analytics />
+        <GoogleAnalytics gaId="G-3P2WGKVJR2" />
       </body>
     </html>
   );
