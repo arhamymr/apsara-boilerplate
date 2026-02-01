@@ -28,7 +28,7 @@ export function MainNav() {
         <Link href="/" className="flex items-center gap-2">
           <img
             src={logoSrc || "https://assets.apsaradigital.com/devkit-logo.png"}
-            alt="Apsara DevKit Logo"
+            alt="Apsara React Boilerplate Logo"
             className="h-4 w-auto object-contain"
           />
         </Link>

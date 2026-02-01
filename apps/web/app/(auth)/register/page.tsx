@@ -15,7 +15,7 @@ export default function RegisterPage() {
         <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
         <div className="absolute bottom-0 left-0 right-0 p-6">
           <p className="text-sm text-muted-foreground">
-            Join Apsara DevKit - Start building amazing applications
+            Demo Register 
           </p>
         </div>
       </div>

@@ -20,7 +20,7 @@ export function QuickstartSection() {
           <Badge variant="secondary" className="mb-4">
             Quick Start
           </Badge>
-          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
+          <h2 className="text-3xl  tracking-tight sm:text-4xl">
             Get Started in Minutes
           </h2>
           <p className="mt-4 text-lg text-muted-foreground">

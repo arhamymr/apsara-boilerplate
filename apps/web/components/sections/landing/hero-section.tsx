@@ -4,18 +4,21 @@ import * as React from "react";
 import Link from "next/link";
 import { Button } from "@workspace/ui/components/button";
 import { Badge } from "@workspace/ui/components/badge";
+import { Card, CardContent } from "@workspace/ui/components/card";
 import { ArrowRight, Github, Play } from "lucide-react";
 
 export function HeroSection() {
   return (
     <section className="relative overflow-hidden py-20 lg:py-32">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-4xl text-center">
+        <div className="mx-auto max-w-4xl">
+          <Card className="bg-background/80 backdrop-blur-sm border-0 shadow-lg">
+            <CardContent className="p-8 md:p-12 text-center">
           <Badge variant="secondary" className="mb-4">
-            Modern Web Development Platform
+            Modern Web Development Boilerplate
           </Badge>
-          <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl md:text-6xl lg:text-7xl">
-            Apsara DevKit
+          <h1 className="text-4xl tracking-tight text-foreground sm:text-5xl md:text-6xl lg:text-7xl">
+            Apsara React Boilerplate
           </h1>
           <p className="mt-6 text-lg leading-8 text-muted-foreground sm:text-xl sm:leading-9">
             A comprehensive modern web application template built with Next.js

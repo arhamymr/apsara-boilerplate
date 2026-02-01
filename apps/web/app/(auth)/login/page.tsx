@@ -15,7 +15,7 @@ export default function LoginPage() {
         <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
         <div className="absolute bottom-0 left-0 right-0 p-6">
           <p className="text-sm text-muted-foreground">
-            Welcome to Apsara DevKit - Modern web application template
+            Demo login - Modern web application template
           </p>
         </div>
       </div>

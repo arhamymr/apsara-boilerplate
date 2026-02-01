@@ -15,7 +15,7 @@ export function AuthLogo() {
     return (
       <img
         src="https://assets.apsaradigital.com/devkit-logo.png"
-        alt="Apsara DevKit Logo"
+        alt="Apsara React Boilerplate Logo"
         className="h-5 w-auto object-contain"
       />
     );
@@ -29,7 +29,7 @@ export function AuthLogo() {
   return (
     <img
       src={logoSrc || "https://assets.apsaradigital.com/devkit-logo.png"}
-      alt="Apsara DevKit Logo"
+      alt="Apsara React Boilerplate Logo"
       className="h-5 w-auto object-contain"
     />
   );
