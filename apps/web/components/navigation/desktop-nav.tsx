@@ -38,7 +38,6 @@ export function DesktopNav() {
       </nav>
 
       <div className="hidden md:flex items-center gap-2">
-        <ThemeToggle />
         <Button variant="ghost" size="sm" asChild>
           <Link
             href="https://github.com/arhamymr/apsara-devkit"
@@ -51,6 +50,7 @@ export function DesktopNav() {
         <Button asChild>
           <Link href="/login">Login (Demo Feature)</Link>
         </Button>
+        <ThemeToggle />
       </div>
     </>
   );
