@@ -9,54 +9,56 @@ import { ArrowRight, Github, Play } from "lucide-react";
 
 export function HeroSection() {
   return (
-    <section className="relative overflow-hidden py-20 lg:py-32">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-4xl">
-          <Card className="bg-background/80 backdrop-blur-sm border-0 shadow-lg">
-            <CardContent className="p-8 md:p-12 text-center">
-          <Badge variant="secondary" className="mb-4">
-            Modern Web Development Boilerplate
-          </Badge>
-          <h1 className="text-4xl tracking-tight text-foreground sm:text-5xl md:text-6xl lg:text-7xl">
-            Apsara React Boilerplate
-          </h1>
-          <p className="mt-6 text-lg leading-8 text-muted-foreground sm:text-xl sm:leading-9">
-            A comprehensive modern web application template built with Next.js
-            16, React 19, and TypeScript. This monorepo includes a
-            production-ready frontend, backend API, AI agent integration, and a
-            shared UI component library.
-          </p>
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
-            <Button size="lg" asChild className="gap-1">
-              <Link href="/docs">
-                Get Started <ArrowRight className="h-4 w-4" />
-              </Link>
-            </Button>
-            <Button variant="outline" size="lg" className="gap-1" asChild>
-              <Link
-                href="https://github.com/arhamymr/apsara-devkit"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Github className="h-4 w-4" /> View on GitHub
-              </Link>
-            </Button>
-          </div>
+    <section className="relative overflow-hidden py-20">
+      <div className="container mx-auto">
+        <div className="mx-auto">
+          <Card className="w-full">
+            <CardContent className="p-8 md:p-12 text-center max-w-4xl mx-auto">
+              <Badge variant="secondary" className="mb-4">
+                Modern Web Development Boilerplate
+              </Badge>
+              <h1 className="text-4xl tracking-tight text-foreground sm:text-5xl md:text-6xl lg:text-7xl">
+                Apsara React Boilerplate
+              </h1>
+              <p className="mt-6 text-lg leading-8 text-muted-foreground sm:text-xl sm:leading-9">
+                A comprehensive modern web application template built with
+                Next.js 16, React 19, and TypeScript. This monorepo includes a
+                production-ready frontend, backend API, AI agent integration,
+                and a shared UI component library.
+              </p>
+              <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
+                <Button size="lg" asChild className="gap-1">
+                  <Link href="/docs">
+                    Get Started <ArrowRight className="h-4 w-4" />
+                  </Link>
+                </Button>
+                <Button variant="outline" size="lg" className="gap-1" asChild>
+                  <Link
+                    href="https://github.com/arhamymr/apsara-devkit"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Github className="h-4 w-4" /> View on GitHub
+                  </Link>
+                </Button>
+              </div>
 
-          <div className="mt-16 grid grid-cols-2 gap-4 sm:grid-cols-4">
-            <div className="flex flex-col items-center gap-2">
-              <Badge variant="outline">Next.js 16</Badge>
-            </div>
-            <div className="flex flex-col items-center gap-2">
-              <Badge variant="outline">React 19</Badge>
-            </div>
-            <div className="flex flex-col items-center gap-2">
-              <Badge variant="outline">TypeScript 5</Badge>
-            </div>
-            <div className="flex flex-col items-center gap-2">
-              <Badge variant="outline">Turborepo</Badge>
-            </div>
-          </div>
+              <div className="mt-16 flex flex-wrap items-center justify-center gap-4">
+                <div className="flex flex-col items-center gap-2">
+                  <Badge variant="outline">Next.js 16</Badge>
+                </div>
+                <div className="flex flex-col items-center gap-2">
+                  <Badge variant="outline">React 19</Badge>
+                </div>
+                <div className="flex flex-col items-center gap-2">
+                  <Badge variant="outline">TypeScript 5</Badge>
+                </div>
+                <div className="flex flex-col items-center gap-2">
+                  <Badge variant="outline">Turborepo</Badge>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
 
