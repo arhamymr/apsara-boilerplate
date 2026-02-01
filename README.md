@@ -1,4 +1,4 @@
-# Apsara DevKit
+# Apsara Boilerplate
 
 A comprehensive modern web application template built with Next.js 16, React 19, and TypeScript. This monorepo includes a production-ready frontend, backend API, AI agent integration, and a shared UI component library.
 
@@ -28,15 +28,16 @@ apsara-devkit/
 │   ├── eslint-config/# ESLint configuration
 │   └── typescript-config/# TypeScript configuration
 ├── turbo.json        # Turborepo configuration
-└── pnpm-workspace.yaml
+├── pnpm-workspace.yaml
+└── AGENTS.md         # AI agent development guidelines
 ```
 
 ## Quick Start
 
 ### Prerequisites
 
-- Node.js 22.13.0 or higher
-- pnpm 9.x
+- Node.js 20 or higher
+- pnpm 10.x
 
 ### Installation
 
@@ -56,10 +57,10 @@ pnpm dev
 ### Root Level
 
 ```bash
-pnpm build          # Build all workspaces
-pnpm dev            # Run dev servers for all apps
-pnpm lint           # Lint all workspaces
-pnpm format         # Format files with Prettier
+pnpm build          # Build all workspaces (turbo build)
+pnpm dev            # Run dev servers for all apps (turbo dev)
+pnpm lint           # Lint all workspaces (turbo lint)
+pnpm format         # Format all files with Prettier
 ```
 
 ### Web App (Next.js)
@@ -68,6 +69,7 @@ pnpm format         # Format files with Prettier
 pnpm --filter web dev      # Start dev server (port 1111)
 pnpm --filter web build    # Build for production
 pnpm --filter web lint     # Run ESLint
+pnpm --filter web lint:fix # Fix ESLint issues
 pnpm --filter web typecheck # Run TypeScript check
 ```
 
@@ -75,12 +77,15 @@ pnpm --filter web typecheck # Run TypeScript check
 
 ```bash
 pnpm --filter backend dev  # Start API server
+pnpm --filter backend build # Build for production
+pnpm --filter backend start # Start production server
 ```
 
 ### AI App (Mastra)
 
 ```bash
 pnpm --filter ai dev       # Start AI agent server
+pnpm --filter ai build     # Build for production
 ```
 
 ### UI Package
@@ -189,7 +194,7 @@ Internet → Cloudflare → VPS :80 → Nginx (optional) → Docker Web (:3000) 
 
 - **Base Image**: Bun (Alpine)
 - **Build Strategy**: Turbo prune with Node.js 22-slim builder
-- **Security**: Runs as non-root user `backend` (uid 1001)
+- **Security**: Runs as non-root user
 - **Exposed Port**: 2222 (internal)
 - **Start Command**: `bun start`
 
@@ -197,7 +202,7 @@ Internet → Cloudflare → VPS :80 → Nginx (optional) → Docker Web (:3000) 
 
 - **Base Image**: Bun (Alpine)
 - **Build Strategy**: Multi-stage with Turborepo prune
-- **Security**: Runs as non-root user `mastraai` (uid 1001)
+- **Security**: Runs as non-root user
 - **Exposed Port**: 3333 (internal)
 - **Start Command**: `bun run .mastra/start`
 
@@ -373,13 +378,15 @@ docker compose up -d web
 
 - **Framework**: Next.js 16 (App Router)
 - **Language**: TypeScript 5
+- **Package Manager**: pnpm 10.x with workspace protocol
+- **Monorepo**: Turborepo 2.7.3
 - **Styling**: Tailwind CSS v4
-- **Components**: Radix UI primitives
+- **Components**: Radix UI primitives + class-variance-authority
 - **State**: React hooks + TanStack Query
 - **Forms**: React Hook Form + Zod
-- **Build**: Turborepo + pnpm
-- **Backend**: Hono
-- **AI**: Mastra
+- **Backend**: Hono with Drizzle ORM
+- **AI**: Mastra with Node.js >= 22.13.0 requirement
+- **UI Package**: Shared component library with workspace protocol
 
 ## Contributing
 
