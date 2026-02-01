@@ -64,7 +64,7 @@ export function QuickstartSection() {
                 <h4 className="font-semibold mb-4">
                   Application-Specific Commands
                 </h4>
-                <div className="grid gap-4 sm:grid-cols-2">
+                <div className="space-y-6">
                   <div>
                     <Badge variant="outline" className="mb-2">
                       Web App

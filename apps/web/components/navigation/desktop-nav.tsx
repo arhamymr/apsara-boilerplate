@@ -41,13 +41,12 @@ export function DesktopNav() {
         <Button variant="ghost" size="sm" asChild>
           <Link href="https://github.com/arhamymr/apsara-devkit"
             target="_blank"
-            rel="noopener noreferrer">Log in (demo)</Link>
+            rel="noopener noreferrer">Github</Link>
         </Button>
         <Button asChild>
           <Link
             href="/login"
           >
-            <Github className="h-4 w-4 mr-2" />
             Login (Demo Feature)
           </Link>
         </Button>
