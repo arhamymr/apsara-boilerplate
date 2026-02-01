@@ -55,31 +55,6 @@ export function TechStackSection() {
             </Card>
           ))}
         </div>
-
-        <div className="mt-16">
-          <Card>
-            <CardHeader>
-              <CardTitle>Project Structure</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <CodeBlock
-                language="bash"
-                code={`apsara-devkit/
-├── apps/
-│   ├── web/          # Next.js frontend (port 1111)
-│   ├── backend/      # Hono API server
-│   └── ai/           # Mastra AI agents
-├── packages/
-│   ├── ui/           # Shared UI component library
-│   ├── eslint-config/# ESLint configuration
-│   └── typescript-config/# TypeScript configuration
-├── turbo.json        # Turborepo configuration
-├── pnpm-workspace.yaml
-└── AGENTS.md         # AI agent development guidelines`}
-              />
-            </CardContent>
-          </Card>
-        </div>
       </div>
     </section>
   );
