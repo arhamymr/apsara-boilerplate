@@ -100,8 +100,8 @@ export function LoginForm({
 
   return (
     <div className={className}>
-      <div className="mb-8">
-        <h1 className="text-2xl  tracking-tight">Welcome back</h1>
+      <div className="mb-8 text-center">
+        <h1 className="text-3xl font-bold tracking-tight">Welcome back</h1>
         <p className="text-muted-foreground mt-2">
           Enter your credentials to access your account
         </p>
@@ -150,7 +150,7 @@ export function LoginForm({
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-5">
         {error && (
           <Alert variant="destructive">
             <AlertCircle className="h-4 w-4" />
@@ -221,7 +221,7 @@ export function LoginForm({
           </div>
         )}
 
-        <Button type="submit" className="w-full" disabled={isLoading}>
+        <Button type="submit" className="w-full" size="lg" disabled={isLoading}>
           {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
           Sign in
         </Button>
@@ -231,7 +231,7 @@ export function LoginForm({
         <span className="text-muted-foreground">
           Don&apos;t have an account?
         </span>{" "}
-        <Link href="/register" className="text-sm text-accent hover:underline">
+        <Link href="/register" className="text-sm font-semibold hover:underline">
           Sign up
         </Link>
       </div>

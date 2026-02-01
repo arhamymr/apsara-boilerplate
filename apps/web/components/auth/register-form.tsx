@@ -59,14 +59,14 @@ export function RegisterForm({
 
   return (
     <div className={className}>
-      <div className="mb-8">
-        <h1 className="text-2xl  tracking-tight">Create an account</h1>
+      <div className="mb-8 text-center">
+        <h1 className="text-3xl font-bold tracking-tight">Create an account</h1>
         <p className="text-muted-foreground mt-2">
           Get started with your free account today
         </p>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-5">
         {error && (
           <Alert variant="destructive">
             <AlertCircle className="h-4 w-4" />
@@ -153,18 +153,18 @@ export function RegisterForm({
             />
             <Label htmlFor="terms" className="text-sm font-normal leading-snug">
               I agree to the{" "}
-              <Link href="#" className="text-accent hover:underline">
+              <Link href="#" className="font-semibold hover:underline">
                 Terms of Service
               </Link>{" "}
               and{" "}
-              <Link href="#" className="text-accent hover:underline">
+              <Link href="#" className="font-semibold hover:underline">
                 Privacy Policy
               </Link>
             </Label>
           </div>
         )}
 
-        <Button type="submit" className="w-full" disabled={isLoading}>
+        <Button type="submit" className="w-full" size="lg" disabled={isLoading}>
           {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
           Create account
         </Button>
@@ -172,7 +172,7 @@ export function RegisterForm({
 
       <div className="mt-6 text-center text-sm">
         <span className="text-muted-foreground">Already have an account?</span>{" "}
-        <Link href="/login" className="text-accent hover:underline">
+        <Link href="/login" className="font-semibold hover:underline">
           Sign in
         </Link>
       </div>

@@ -11,6 +11,7 @@ import {
   SheetTrigger,
 } from "@workspace/ui/components/sheet";
 import { Menu, X, Github } from "lucide-react";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 const navItems: { name: string; href: string }[] = [];
 
@@ -28,7 +29,8 @@ export function MobileNav() {
       </SheetTrigger>
       <SheetContent side="right" className="w-[280px] p-0">
         <div className="flex flex-col h-full">
-          <div className="flex items-center justify-end p-4 border-b">
+          <div className="flex items-center justify-between p-4 border-b">
+            <ThemeToggle />
             <Button variant="ghost" size="icon" onClick={() => setOpen(false)}>
               <X className="h-5 w-5" />
             </Button>

@@ -65,7 +65,7 @@ export function ResetPasswordForm({
           <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-accent/10 text-accent mb-4">
             <CheckCircle className="h-6 w-6" />
           </div>
-          <h1 className="text-2xl  tracking-tight">Password reset</h1>
+          <h1 className="text-3xl font-bold tracking-tight">Password reset</h1>
           <p className="text-muted-foreground mt-2">
             Your password has been successfully reset. You can now sign in with
             your new password.
@@ -81,14 +81,14 @@ export function ResetPasswordForm({
 
   return (
     <div className={className}>
-      <div className="mb-8">
-        <h1 className="text-2xl  tracking-tight">Reset password</h1>
+      <div className="mb-8 text-center">
+        <h1 className="text-3xl font-bold tracking-tight">Reset password</h1>
         <p className="text-muted-foreground mt-2">
           Enter your new password below.
         </p>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-5">
         {error && (
           <Alert variant="destructive">
             <AlertCircle className="h-4 w-4" />
@@ -155,7 +155,7 @@ export function ResetPasswordForm({
           </div>
         </div>
 
-        <Button type="submit" className="w-full" disabled={isLoading}>
+        <Button type="submit" className="w-full" size="lg" disabled={isLoading}>
           {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
           Reset password
         </Button>
