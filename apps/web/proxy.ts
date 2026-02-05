@@ -4,19 +4,41 @@ export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const sessionCookie = request.cookies.get("better-auth.session_token");
 
-  const isProtectedRoute = pathname.startsWith("/dashboard");
-  const isAuthRoute =
-    pathname.startsWith("/login") ||
-    pathname.startsWith("/register") ||
-    pathname.startsWith("/forgot-password") ||
-    pathname.startsWith("/reset-password");
+  // Public routes that don't require authentication
+  const publicRoutes = [
+    "/",
+    "/login",
+    "/register",
+    "/forgot-password",
+    "/reset-password",
+    "/api/auth",
+  ];
 
-  if (isProtectedRoute && !sessionCookie) {
-    return NextResponse.redirect(new URL("/login", request.url));
+  // Check if the current path is public
+  const isPublicRoute = publicRoutes.some((route) =>
+    pathname.startsWith(route),
+  );
+
+  // If it's a public route, allow access
+  if (isPublicRoute) {
+    // If user is already authenticated and tries to access auth routes, redirect to dashboard
+    if (
+      sessionCookie &&
+      (pathname.startsWith("/login") ||
+        pathname.startsWith("/register") ||
+        pathname.startsWith("/forgot-password") ||
+        pathname.startsWith("/reset-password"))
+    ) {
+      return NextResponse.redirect(new URL("/dashboard", request.url));
+    }
+    return NextResponse.next();
   }
 
-  if (isAuthRoute && sessionCookie) {
-    return NextResponse.redirect(new URL("/dashboard", request.url));
+  // For protected routes, check for session
+  if (pathname.startsWith("/dashboard") && !sessionCookie) {
+    const loginUrl = new URL("/login", request.url);
+    loginUrl.searchParams.set("redirect", pathname);
+    return NextResponse.redirect(loginUrl);
   }
 
   return NextResponse.next();

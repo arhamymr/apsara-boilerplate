@@ -7,6 +7,8 @@ import { Input } from "@workspace/ui/components/input";
 import { Label } from "@workspace/ui/components/label";
 import { Alert, AlertDescription } from "@workspace/ui/components/alert";
 import { Loader2, AlertCircle, CheckCircle, Eye, EyeOff } from "lucide-react";
+import { authClient } from "@/lib/auth-client";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export interface ResetPasswordFormProps {
   onSubmit?: (password: string) => Promise<void>;
@@ -22,6 +24,9 @@ export function ResetPasswordForm({
   const [isSuccess, setIsSuccess] = React.useState(false);
   const [showPassword, setShowPassword] = React.useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const token = searchParams.get("token");
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -48,7 +53,15 @@ export function ResetPasswordForm({
       if (onSubmit) {
         await onSubmit(password);
       } else {
-        await new Promise((resolve) => setTimeout(resolve, 1500));
+        // Use Better Auth reset password
+        if (!token) {
+          throw new Error("Invalid reset token");
+        }
+
+        await authClient.resetPassword({
+          newPassword: password,
+          token,
+        });
       }
       setIsSuccess(true);
     } catch (err) {

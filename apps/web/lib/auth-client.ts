@@ -7,3 +7,16 @@ export const authClient = createAuthClient({
 export const { useSession } = authClient;
 
 export { authClient as client };
+
+// Custom hook for session with loading state
+export function useAuthSession() {
+  const { data: session, isPending, error } = useSession();
+
+  return {
+    session,
+    isLoading: isPending,
+    isAuthenticated: !!session?.user,
+    user: session?.user,
+    error,
+  };
+}

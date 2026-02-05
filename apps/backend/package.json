@@ -1,23 +1,29 @@
 {
   "name": "backend",
+  "type": "module",
   "scripts": {
     "dev": "bun run --hot src/index.ts",
     "start": "bun run src/index.ts",
-    "db:push": "drizzle-kit push",
-    "seed": "bun scripts/seed.ts"
+    "db:generate:migration": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:studio":  "drizzle-kit studio",
+    "auth-docs": "open-cli http://localhost:2222/api/auth/reference"
   },
   "dependencies": {
+    "@hono/zod-validator": "^0.7.6",
     "better-auth": "1.4.10",
-    "drizzle-kit": "^0.31.4",
-    "drizzle-orm": "^0.41.0",
+    "drizzle-orm": "^0.45.1",
     "hono": "^4.11.3",
-    "postgres": "^3.4.8",
+    "nanoid": "^5.1.6",
+    "pg": "^8.18.0",
     "zod": "^4.3.5"
   },
   "devDependencies": {
     "@types/node": "^22.19.3",
+    "@types/pg": "^8.16.0",
     "@workspace/eslint-config": "workspace:*",
     "@workspace/typescript-config": "workspace:*",
+    "drizzle-kit": "^0.31.8",
     "tsc-alias": "^1.8.16",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"

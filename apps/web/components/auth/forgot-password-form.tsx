@@ -6,6 +6,7 @@ import { Button } from "@workspace/ui/components/button";
 import { Input } from "@workspace/ui/components/input";
 import { Label } from "@workspace/ui/components/label";
 import { Loader2, ArrowLeft, CheckCircle } from "lucide-react";
+import { authClient } from "@/lib/auth-client";
 
 export interface ForgotPasswordFormProps {
   onSubmit?: (email: string) => Promise<void>;
@@ -24,16 +25,22 @@ export function ForgotPasswordForm({
     setIsLoading(true);
 
     const formData = new FormData(e.currentTarget);
-    const email = formData.get("email") as string;
+  const email = formData.get("email") as string
 
     try {
       if (onSubmit) {
         await onSubmit(email);
       } else {
-        // Default demo behavior
-        await new Promise((resolve) => setTimeout(resolve, 1500));
+        // Use Better Auth forgot password
+        await authClient.requestPasswordReset({
+          email,
+          redirectTo: "/reset-password",
+        });
       }
       setIsSubmitted(true);
+    } catch (err) {
+      console.error("Password reset request failed:", err);
+      setIsSubmitted(true); // Still show success message for security
     } finally {
       setIsLoading(false);
     }

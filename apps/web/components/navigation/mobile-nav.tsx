@@ -10,14 +10,42 @@ import {
   SheetContent,
   SheetTrigger,
 } from "@workspace/ui/components/sheet";
-import { Menu, X, Github } from "lucide-react";
+import { Menu, X, Github, User, LogOut } from "lucide-react";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { useSession, authClient } from "@/lib/auth-client";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@workspace/ui/components/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@workspace/ui/components/dropdown-menu";
 
 const navItems: { name: string; href: string }[] = [];
 
 export function MobileNav() {
   const pathname = usePathname();
   const [open, setOpen] = React.useState(false);
+  const { data: session } = useSession();
+
+  const handleSignOut = async () => {
+    await authClient.signOut();
+    setOpen(false);
+  };
+
+  const getInitials = (name: string) => {
+    return name
+      .split(" ")
+      .map((n) => n[0])
+      .join("")
+      .toUpperCase();
+  };
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
@@ -56,13 +84,75 @@ export function MobileNav() {
                 </Link>
               );
             })}
+
+            {session?.user && (
+              <>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      className="w-full justify-start px-3 py-2.5"
+                      onClick={() => setOpen(false)}
+                    >
+                      <Avatar className="h-8 w-8 mr-3">
+                        <AvatarImage
+                          src={session.user.image || undefined}
+                          alt={session.user.name || "User"}
+                        />
+                        <AvatarFallback>
+                          {session.user.name
+                            ? getInitials(session.user.name)
+                            : "U"}
+                        </AvatarFallback>
+                      </Avatar>
+                      <span className="text-sm">
+                        {session.user.name || "User"}
+                      </span>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="start" className="w-56 ml-4">
+                    <DropdownMenuLabel>
+                      <div className="flex flex-col">
+                        <span className="font-medium">
+                          {session.user.name || "User"}
+                        </span>
+                        <span className="text-xs text-muted-foreground">
+                          {session.user.email || "user@example.com"}
+                        </span>
+                      </div>
+                    </DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem asChild>
+                      <Link href="/dashboard" onClick={() => setOpen(false)}>
+                        <User className="mr-2 h-4 w-4" />
+                        Dashboard
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem
+                      onClick={handleSignOut}
+                      className="text-destructive"
+                    >
+                      <LogOut className="mr-2 h-4 w-4" />
+                      Log out
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </>
+            )}
           </nav>
           <div className="p-4 border-t space-y-2">
-            <Button variant="outline" className="w-full bg-transparent" asChild>
-              <Link href="/login" onClick={() => setOpen(false)}>
-                Log in (demo project)
-              </Link>
-            </Button>
+            {!session?.user && (
+              <Button
+                variant="outline"
+                className="w-full bg-transparent"
+                asChild
+              >
+                <Link href="/login" onClick={() => setOpen(false)}>
+                  Sign in
+                </Link>
+              </Button>
+            )}
             <Button className="w-full" asChild>
               <Link
                 href="https://github.com/arhamymr/apsara-devkit"

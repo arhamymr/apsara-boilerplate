@@ -8,11 +8,12 @@ import { Label } from "@workspace/ui/components/label";
 import { Checkbox } from "@workspace/ui/components/checkbox";
 import { Alert, AlertDescription } from "@workspace/ui/components/alert";
 import { Loader2, AlertCircle, Eye, EyeOff } from "lucide-react";
+import { authClient } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
 
 export interface RegisterFormProps {
   onSubmit?: (data: {
-    firstName: string;
-    lastName: string;
+    fullName: string;
     email: string;
     password: string;
   }) => Promise<void>;
@@ -29,6 +30,8 @@ export function RegisterForm({
   const [error, setError] = React.useState<string | null>(null);
   const [acceptedTerms, setAcceptedTerms] = React.useState(false);
   const [showPassword, setShowPassword] = React.useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
+  const router = useRouter();
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -36,23 +39,58 @@ export function RegisterForm({
     setError(null);
 
     const formData = new FormData(e.currentTarget);
+    const fullName = formData.get("full-name") as string;
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
+    const confirmPassword = formData.get("confirm-password") as string;
+
+    // Validate password match
+    if (password !== confirmPassword) {
+      setError("Passwords do not match");
+      setIsLoading(false);
+      return;
+    }
+
+    // Validate password length
+    if (password.length < 8) {
+      setError("Password must be at least 8 characters");
+      setIsLoading(false);
+      return;
+    }
+
     const data = {
-      firstName: formData.get("first-name") as string,
-      lastName: formData.get("last-name") as string,
-      email: formData.get("email") as string,
-      password: formData.get("password") as string,
+      fullName,
+      email,
+      password,
     };
 
     try {
       if (onSubmit) {
         await onSubmit(data);
       } else {
-        // Default demo behavior
-        await new Promise((resolve) => setTimeout(resolve, 1500));
+        // Use Better Auth sign up
+        await authClient.signUp.email(
+          {
+            email: data.email,
+            password: data.password,
+            name: data.fullName,
+          },
+          {
+            onRequest: () => {
+              setIsLoading(true);
+            },
+            onSuccess: () => {
+              router.push("/dashboard");
+            },
+            onError: (ctx) => {
+              setError(ctx.error.message);
+              setIsLoading(false);
+            },
+          },
+        );
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred");
-    } finally {
       setIsLoading(false);
     }
   }
@@ -74,27 +112,16 @@ export function RegisterForm({
           </Alert>
         )}
 
-        <div className="grid grid-cols-2 gap-4">
-          <div className="space-y-2">
-            <Label htmlFor="first-name">First name</Label>
-            <Input
-              id="first-name"
-              name="first-name"
-              placeholder="John"
-              required
-              disabled={isLoading}
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="last-name">Last name</Label>
-            <Input
-              id="last-name"
-              name="last-name"
-              placeholder="Doe"
-              required
-              disabled={isLoading}
-            />
-          </div>
+        <div className="space-y-2">
+          <Label htmlFor="full-name">Full Name</Label>
+          <Input
+            id="full-name"
+            name="full-name"
+            type="text"
+            placeholder="John Doe"
+            required
+            disabled={isLoading}
+          />
         </div>
 
         <div className="space-y-2">
@@ -138,6 +165,34 @@ export function RegisterForm({
           <p className="text-xs text-muted-foreground">
             Must be at least 8 characters
           </p>
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="confirm-password">Confirm Password</Label>
+          <div className="relative">
+            <Input
+              id="confirm-password"
+              name="confirm-password"
+              type={showConfirmPassword ? "text" : "password"}
+              placeholder="Confirm your password"
+              required
+              disabled={isLoading}
+            />
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              disabled={isLoading}
+            >
+              {showConfirmPassword ? (
+                <EyeOff className="h-4 w-4 text-muted-foreground" />
+              ) : (
+                <Eye className="h-4 w-4 text-muted-foreground" />
+              )}
+            </Button>
+          </div>
         </div>
 
         {showTerms && (
