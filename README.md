@@ -153,6 +153,28 @@ The globals.css automatically scans all components for Tailwind classes using `@
 
 See [docs/STYLES.md](./docs/STYLES.md) for detailed styling guide.
 
+## API Documentation
+
+The backend API provides comprehensive authentication endpoints with automatically generated documentation:
+
+- **Authentication API Reference**: [http://localhost:2222/api/auth/reference](http://localhost:2222/api/auth/reference) - Complete interactive documentation for all authentication endpoints including login, registration, session management, and more
+
+### Testing the API
+
+You can access the API documentation when the backend is running:
+
+1. Start the backend server with `pnpm --filter backend dev` or `bun run --hot src/index.ts` from the backend directory
+2. Visit the API reference URL in your browser at [http://localhost:2222/api/auth/reference](http://localhost:2222/api/auth/reference)
+3. The documentation includes interactive examples for testing endpoints directly in your browser
+
+### Quick Access
+
+For convenience, you can also use the provided script to open the auth documentation:
+
+```bash
+pnpm --filter backend auth-docs
+```
+
 ## Deployment
 
 This project supports Docker-based deployment for production environments. All applications run in isolated containers with internal networking.
