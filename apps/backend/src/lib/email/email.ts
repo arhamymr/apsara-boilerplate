@@ -7,10 +7,9 @@ import {
 } from "../../types/email";
 
 // Default sender configuration
-// TODO: Replace with your actual sender information
 const defaultSender: EmailSender = {
-  name: "Your App Name",
-  email: "noreply@yourapp.com",
+  name: process.env.EMAIL_SENDER_NAME || "Your App Name",
+  email: process.env.EMAIL_SENDER_EMAIL || "noreply@yourapp.com",
 };
 
 /**
@@ -39,6 +38,8 @@ export const sendEmail = async (
       text: params.text,
       sender: defaultSender,
     });
+    
+    console.log("Email sent successfully, message ID:", result.messageId);
 
     return {
       success: true,
@@ -83,6 +84,8 @@ export const sendEmailWithCustomSender = async (
       text: params.text,
       sender,
     });
+    
+    console.log("Email sent successfully, message ID:", result.messageId);
 
     return {
       success: true,

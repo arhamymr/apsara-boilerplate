@@ -4,8 +4,7 @@ import { drizzleAdapter } from 'better-auth/adapters/drizzle';
 import { db } from '@/db/database';
 import { sendEmail } from '@/lib/email/email';
 
-
-export const auth = betterAuth({
+const auth = betterAuth({
     database: drizzleAdapter(db, {
         provider: "pg",
     }),
@@ -43,3 +42,5 @@ export const auth = betterAuth({
         openAPI(),
     ]
 })  
+
+export { auth}
