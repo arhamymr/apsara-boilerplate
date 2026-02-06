@@ -2,17 +2,17 @@ import { betterAuth } from "better-auth"
 import { openAPI } from "better-auth/plugins";
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
 import { db } from '@/db/database';
-import { sendEmail } from '@/lib/email';
+import { sendEmail } from '@/lib/email/email';
 
 
 export const auth = betterAuth({
     database: drizzleAdapter(db, {
         provider: "pg",
     }),
-    
+
     emailAndPassword: {
         enabled: true,
-        requireEmailVerification: false,
+        requireEmailVerification: true,
 
         sendResetPassword: async ({ user, url, token }, request) => {
             void sendEmail({

@@ -7,7 +7,7 @@
     "db:generate:migration": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio",
-    "auth-docs": "open-cli http://localhost:2222/api/auth/reference"
+    "auth:docs": "open-cli http://localhost:2222/api/auth/reference"
   },
   "dependencies": {
     "@getbrevo/brevo": "^3.0.1",
