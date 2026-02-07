@@ -1,13 +1,26 @@
 import { Hono } from "hono";
 import { corsMiddleware } from "./middleware/cors";
-import { errorHandler } from "./middleware/error-handler";
-import { routes } from "./routes";
+import { auth } from "./lib/auth";
 
-const app = new Hono<{}>();
+const app = new Hono();
 
 app.use("*", corsMiddleware);
-app.onError(errorHandler);
-app.route("/", routes);
+app.get("/", (c) => {
+  return c.json({
+    ok: true,
+    message: "Welcome to the Backend API",
+  });
+});
+
+app.get("/health", (c) => {
+  return c.json({
+    status: "healthy",
+    timestamp: new Date().toISOString(),
+  });
+});
+
+app.on(["POST", "GET"], "/api/auth/**", (c) => auth.handler(c.req.raw));
+
 
 const PORT = 2222;
 

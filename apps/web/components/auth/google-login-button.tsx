@@ -49,9 +49,10 @@ export function GoogleLoginButton({
           }
         },
         onError: (ctx) => {
+          console.log(ctx)
           setIsLoading(false);
           onLoadingChange?.(false);
-          console.error("Google login error:", ctx.error);
+          // console.error("Google login error:", ctx.error);
           if (ctx.error.message.includes("invalid origins")) {
             onError?.(
               "Invalid origins: Please add http://localhost:1111 to authorized JavaScript origins in your Google OAuth console",

@@ -5,15 +5,24 @@ import { db } from "@/db/database";
 import { sendEmail } from "@/lib/email/email";
 import * as schema from "@/db/schema";
 
-const auth = betterAuth({
+export const auth = betterAuth({
   baseURL: process.env.BETTER_AUTH_URL || "http://localhost:2222",
+  trustedOrigins: process.env.TRUSTED_ORIGINS?.split(",") || [
+    "http://localhost:1111",
+  ],
   database: drizzleAdapter(db, {
     provider: "pg",
     schema,
   }),
-  trustedOrigins: process.env.TRUSTED_ORIGINS?.split(",") || [
-    "http://localhost:1111",
-  ],
+
+  socialProviders: {
+    google: {
+      clientId: process.env.GOOGLE_CLIENT_ID as string,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+      enabled: true,
+      redirectUri: process.env.GOOGLE_REDIRECT_URI,
+    },
+  },
 
   emailAndPassword: {
     enabled: true,
@@ -30,32 +39,8 @@ const auth = betterAuth({
       // your logic here
       console.log(`Password for user ${user.email} has been reset.`);
     },
-
-    emailVerification: {
-      sendVerificationEmail: async ({ user, url },) => {
-        console.log("Trigger Email Verification sender");
-        void sendEmail({
-          to: user.email,
-          subject: "Verify your email address",
-          text: `Click the link to verify your email: ${url}`,
-        });
-
-        console.log("Email Verification sent to ", user.email, url);
-      },
-    },
-
-    socialProviders: {
-      google: {
-        clientId: process.env.GOOGLE_CLIENT_ID as string,
-        clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-        enabled: true,
-        redirectUri: process.env.GOOGLE_REDIRECT_URI,
-      },
-    },
   },
 
   // plugins
   plugins: [openAPI()],
 });
-
-export { auth };
