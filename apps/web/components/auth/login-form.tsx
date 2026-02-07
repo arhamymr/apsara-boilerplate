@@ -2,10 +2,9 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { GoogleLoginButton } from "./google-login-button";
 import { EmailPasswordLoginForm } from "./email-password-login-form";
-import { authClient } from "@/lib/auth-client";
 
 export interface LoginFormProps {
   onSubmit?: (
@@ -26,58 +25,8 @@ export function LoginForm({
   showSocialLogin = true,
   className,
 }: LoginFormProps) {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const redirectTo = searchParams.get("redirect") || "/dashboard";
-  const [isGoogleLoading, setIsGoogleLoading] = React.useState(false);
-  const [isEmailLoading, setIsEmailLoading] = React.useState(false);
-  const [error, setError] = React.useState<string | null>(null);
-
-  const handleGoogleLoginSuccess = () => {
-    router.push(redirectTo);
-  };
-
-  const handleGoogleLoginError = (errorMessage: string) => {
-    setError(errorMessage);
-  };
-
-  const handleEmailLoadingChange = (isLoading: boolean) => {
-    setIsEmailLoading(isLoading);
-  };
-
-  const handleGoogleLoadingChange = (isLoading: boolean) => {
-    setIsGoogleLoading(isLoading);
-  };
-
-  const handleEmailSubmit = async (
-    email: string,
-    password: string,
-    remember: boolean,
-  ) => {
-    if (onSubmit) {
-      await onSubmit(email, password, remember);
-    } else {
-      await authClient.signIn.email(
-        {
-          email,
-          password,
-          rememberMe: remember,
-        },
-        {
-          onRequest: () => {
-            setIsEmailLoading(true);
-          },
-          onSuccess: () => {
-            router.push(redirectTo);
-          },
-          onError: (ctx) => {
-            setError(ctx.error.message);
-            setIsEmailLoading(false);
-          },
-        },
-      );
-    }
-  };
 
   return (
     <div className={className}>
@@ -90,13 +39,7 @@ export function LoginForm({
 
       {showSocialLogin && (
         <div className="space-y-3 mb-6">
-          <GoogleLoginButton
-            redirectTo={redirectTo}
-            disabled={isEmailLoading}
-            onLoadingChange={handleGoogleLoadingChange}
-            onError={handleGoogleLoginError}
-            onSuccess={handleGoogleLoginSuccess}
-          />
+          <GoogleLoginButton redirectTo={redirectTo} />
 
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
@@ -112,11 +55,10 @@ export function LoginForm({
       )}
 
       <EmailPasswordLoginForm
-        onSubmit={handleEmailSubmit}
+        onSubmit={onSubmit}
         redirectTo={redirectTo}
         showRememberMe={showRememberMe}
         showForgotPassword={showForgotPassword}
-        disabled={isGoogleLoading}
       />
 
       <div className="mt-6 text-center text-sm">

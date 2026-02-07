@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Button } from "@workspace/ui/components/button";
 import { Input } from "@workspace/ui/components/input";
 import { Label } from "@workspace/ui/components/label";
@@ -31,6 +32,7 @@ export function EmailPasswordLoginForm({
   disabled,
   className,
 }: EmailPasswordLoginFormProps) {
+  const router = useRouter();
   const [isLoading, setIsLoading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
   const [remember, setRemember] = React.useState(false);
@@ -60,7 +62,11 @@ export function EmailPasswordLoginForm({
               setIsLoading(true);
             },
             onSuccess: () => {
-              // Navigation will be handled by parent component
+              setIsLoading(false);
+              // Navigate to redirect URL if provided
+              if (redirectTo) {
+                router.push(redirectTo);
+              }
             },
             onError: (ctx) => {
               setError(ctx.error.message);
@@ -102,7 +108,7 @@ export function EmailPasswordLoginForm({
           {showForgotPassword && (
             <Link
               href="/forgot-password"
-              className="text-sm text-accent hover:underline"
+              className="text-sm text-muted-foreground hover:underline"
             >
               Forgot password?
             </Link>

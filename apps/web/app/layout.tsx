@@ -50,7 +50,6 @@ export const metadata: Metadata = {
   title: "Apsara React Boilerplate - Modern Web Development Platform",
   description:
     "A comprehensive development kit featuring pre-built components, AI integrations, dashboard layouts, and everything you need to build modern web applications.",
-  generator: "v0.app",
   icons: {
     icon: [
       {

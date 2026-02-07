@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useRouter } from "next/navigation";
 import { Button } from "@workspace/ui/components/button";
 import { authClient } from "@/lib/auth-client";
 
@@ -21,6 +22,7 @@ export function GoogleLoginButton({
   onSuccess,
   className,
 }: GoogleLoginButtonProps) {
+  const router = useRouter();
   const [isLoading, setIsLoading] = React.useState(false);
 
   const handleGoogleLogin = async () => {
@@ -41,11 +43,22 @@ export function GoogleLoginButton({
           setIsLoading(false);
           onLoadingChange?.(false);
           onSuccess?.();
+          // Navigate to redirect URL if provided
+          if (redirectTo) {
+            router.push(redirectTo);
+          }
         },
         onError: (ctx) => {
           setIsLoading(false);
           onLoadingChange?.(false);
-          onError?.(ctx.error.message);
+          console.error("Google login error:", ctx.error);
+          if (ctx.error.message.includes("invalid origins")) {
+            onError?.(
+              "Invalid origins: Please add http://localhost:1111 to authorized JavaScript origins in your Google OAuth console",
+            );
+          } else {
+            onError?.(ctx.error.message);
+          }
         },
       },
     );

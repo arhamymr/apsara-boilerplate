@@ -118,7 +118,7 @@ export function RegisterForm({
             id="full-name"
             name="full-name"
             type="text"
-            placeholder="John Doe"
+            placeholder="Full Name"
             required
             disabled={isLoading}
           />

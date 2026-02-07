@@ -75,7 +75,7 @@ export function ResetPasswordForm({
     return (
       <div className={className}>
         <div className="mb-8">
-          <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-accent/10 text-accent mb-4">
+          <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-accent/10  mb-4">
             <CheckCircle className="h-6 w-6" />
           </div>
           <h1 className="text-3xl font-bold tracking-tight">Password reset</h1>
