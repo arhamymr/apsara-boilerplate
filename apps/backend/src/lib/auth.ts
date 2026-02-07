@@ -4,10 +4,9 @@ import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { db } from "@/db/database";
 import { sendEmail } from "@/lib/email/email";
 import * as schema from "@/db/schema";
-import { SubAccountDetailsResponsePlanInfoFeaturesLandingPage } from "@getbrevo/brevo";
 
 const auth = betterAuth({
-  baseURL: process.env.BETTER_AUTH_URL || "http://localhost:4001",
+  baseURL: process.env.BETTER_AUTH_URL || "http://localhost:2222",
   database: drizzleAdapter(db, {
     provider: "pg",
     schema,
@@ -18,7 +17,7 @@ const auth = betterAuth({
 
   emailAndPassword: {
     enabled: true,
-    requireEmailVerification: SubAccountDetailsResponsePlanInfoFeaturesLandingPage,
+    requireEmailVerification: false,
 
     sendResetPassword: async ({ user, url, token }, request) => {
       void sendEmail({
