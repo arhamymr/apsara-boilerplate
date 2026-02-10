@@ -12,7 +12,7 @@ import {
 } from "@workspace/ui/components/sheet";
 import { Menu, X, Github, User, LogOut } from "lucide-react";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { useSession, authClient } from "@/lib/auth-client";
+import { useSession, authClient } from "@/lib/auth/auth-client";
 import {
   Avatar,
   AvatarFallback,

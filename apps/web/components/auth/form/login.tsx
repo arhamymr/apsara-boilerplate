@@ -3,8 +3,8 @@
 import * as React from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { GoogleLoginButton } from "./google-login-button";
-import { EmailPasswordLoginForm } from "./email-password-login-form";
+import { GoogleLoginButton } from "../google-login-button";
+import { EmailPasswordLoginForm } from "./email-password-login";
 
 export interface LoginFormProps {
   onSubmit?: (

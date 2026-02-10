@@ -24,6 +24,7 @@ import {
   FolderOpen,
   X,
 } from "lucide-react";
+import { Badge } from "@workspace/ui/components/badge";
 
 const sidebarItems = [
   { name: "Overview", href: "/dashboard", icon: LayoutDashboard },
@@ -46,11 +47,20 @@ export function DashboardSidebar() {
   const SidebarContent = () => (
     <div className="flex h-full flex-col">
       <div className="flex h-16 items-center border-b px-4">
-        <Link href="/" className="flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
-            <Sparkles className="h-4 w-4 text-primary-foreground" />
-          </div>
-          <span className="text-lg font-semibold">UIKit</span>
+         <Link href="/" className="flex items-center align-center  gap-2">
+          <img
+            src={"https://assets.apsaradigital.com/devkit-logo-white.png"}
+            alt="Apsara React Boilerplate Logo"
+            className="h-4.5 w-auto object-contain hidden dark:block"
+          />
+          <img
+            src={"https://assets.apsaradigital.com/devkit-logo.png"}
+            alt="Apsara React Boilerplate Logo"
+            className="h-4.5 w-auto object-contain dark:hidden"
+          />
+          <Badge variant="secondary" className="ml-1">
+            Dashboard
+          </Badge>
         </Link>
       </div>
 

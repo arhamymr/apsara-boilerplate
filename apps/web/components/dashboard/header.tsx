@@ -17,7 +17,7 @@ import {
   DropdownMenuTrigger,
 } from "@workspace/ui/components/dropdown-menu";
 import { Bell, Search, Settings, User, LogOut } from "lucide-react";
-import { authClient, useSession } from "@/lib/auth-client";
+import { authClient, useSession } from "@/lib/auth/auth-client";
 import { useRouter } from "next/navigation";
 
 export function DashboardHeader() {
@@ -62,15 +62,12 @@ export function DashboardHeader() {
           <span className="absolute top-1 right-1 h-2 w-2 rounded-full bg-accent" />
           <span className="sr-only">Notifications</span>
         </Button>
-
-        <ThemeToggle />
-
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="relative h-9 w-9 rounded-full">
               <Avatar className="h-9 w-9">
                 <AvatarImage
-                  src={session?.user?.image || "/professional-portrait.png"}
+                  src={session?.user?.image || undefined}
                   alt="User"
                 />
                 <AvatarFallback>
