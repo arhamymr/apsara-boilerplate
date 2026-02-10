@@ -5,25 +5,16 @@ import { db } from "@/db/database";
 import { sendEmail } from "@/lib/email/email";
 import * as schema from "@/db/schema";
 
-export const auth = betterAuth({
+const auth = betterAuth({
   baseURL: process.env.BETTER_AUTH_URL || "http://localhost:2222",
-  trustedOrigins: process.env.TRUSTED_ORIGINS?.split(",") || [
-    "http://localhost:1111",
-  ],
   database: drizzleAdapter(db, {
     provider: "pg",
     schema,
   }),
-
-  socialProviders: {
-    google: {
-      clientId: process.env.GOOGLE_CLIENT_ID as string,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-      enabled: true,
-      redirectUri: process.env.GOOGLE_REDIRECT_URI,
-    },
-  },
-
+  trustedOrigins: process.env.TRUSTED_ORIGINS?.split(",") || [
+    "http://localhost:1111",
+  ],
+  
   emailAndPassword: {
     enabled: true,
     requireEmailVerification: false,
@@ -39,8 +30,19 @@ export const auth = betterAuth({
       // your logic here
       console.log(`Password for user ${user.email} has been reset.`);
     },
+
+    socialProviders: {
+      google: {
+        clientId: process.env.GOOGLE_CLIENT_ID as string,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+        enabled: true,
+        redirectUri: process.env.GOOGLE_REDIRECT_URI,
+      },
+    },
   },
 
   // plugins
   plugins: [openAPI()],
 });
+
+export { auth };

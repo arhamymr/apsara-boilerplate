@@ -5,8 +5,6 @@ import { GoogleAnalytics } from "@next/third-parties/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import "@workspace/ui/styles/globals.css";
 import { QueryProvider } from "@/components/providers/query-provider";
-import { MainNav } from "@/components/navigation/main-nav";
-import { Footer } from "@/components/footer";
 
 import {
   Geist,
