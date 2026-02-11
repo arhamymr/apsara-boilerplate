@@ -1,6 +1,6 @@
 import { DashboardSidebar } from "@/components/dashboard/sidebar";
 import { DashboardHeader } from "@/components/dashboard/header";
-import ProtectedPage from "@/lib/auth/protected-page";
+import { AuthenticatedOnly } from "@/components/auth/protected-route";
 
 export default function DashboardLayout({
   children,
@@ -8,7 +8,7 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ProtectedPage>
+    <AuthenticatedOnly>
       <div className="min-h-screen">
         <DashboardSidebar />
         <div className="lg:pl-64">
@@ -16,6 +16,6 @@ export default function DashboardLayout({
           <main className="p-4 md:p-6">{children}</main>
         </div>
       </div>
-    </ProtectedPage>
+    </AuthenticatedOnly>
   );
 }

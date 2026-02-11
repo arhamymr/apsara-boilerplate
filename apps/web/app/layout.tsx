@@ -3,6 +3,8 @@ import type { Metadata, Viewport } from "next";
 
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { ThemeProvider } from "@/components/theme-provider";
+import { TooltipProvider } from "@workspace/ui/components/tooltip";
+
 import "@workspace/ui/styles/globals.css";
 import { QueryProvider } from "@/components/providers/query-provider";
 
@@ -84,7 +86,8 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className="font-sans antialiased">
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+        <TooltipProvider>
+ <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
           <QueryProvider>
             <div className="flex min-h-screen flex-col">
               {children}
@@ -92,6 +95,8 @@ export default function RootLayout({
           </QueryProvider>
         </ThemeProvider>
         <GoogleAnalytics gaId="G-3P2WGKVJR2" />
+        </TooltipProvider>
+       
       </body>
     </html>
   );

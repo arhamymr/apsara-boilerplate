@@ -25,18 +25,22 @@ import {
   X,
 } from "lucide-react";
 import { Badge } from "@workspace/ui/components/badge";
+import { AdminOnly } from "@/components/auth/protected-route";
 
 const sidebarItems = [
   { name: "Overview", href: "/dashboard", icon: LayoutDashboard },
   { name: "Analytics", href: "/dashboard/analytics", icon: BarChart3 },
-  { name: "Users", href: "/dashboard/users", icon: Users },
   { name: "Projects", href: "/dashboard/projects", icon: FolderOpen },
   { name: "Components", href: "/dashboard/components", icon: Layers },
   { name: "Notifications", href: "/dashboard/notifications", icon: Bell },
 ];
 
-const bottomItems = [
+const adminItems = [
+  { name: "Users", href: "/dashboard/users", icon: Users },
   { name: "Settings", href: "/dashboard/settings", icon: Settings },
+];
+
+const bottomItems = [
   { name: "Help", href: "/dashboard/help", icon: HelpCircle },
 ];
 
@@ -47,7 +51,7 @@ export function DashboardSidebar() {
   const SidebarContent = () => (
     <div className="flex h-full flex-col">
       <div className="flex h-16 items-center border-b px-4">
-         <Link href="/" className="flex items-center align-center  gap-2">
+        <Link href="/" className="flex items-center align-center  gap-2">
           <img
             src={"https://assets.apsaradigital.com/devkit-logo-white.png"}
             alt="Apsara React Boilerplate Logo"
@@ -90,6 +94,30 @@ export function DashboardSidebar() {
 
       <div className="border-t p-2">
         <nav className="grid gap-1">
+          {/* Admin-only items */}
+          <AdminOnly>
+            {adminItems.map((item) => {
+              const isActive = pathname === item.href;
+              return (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  onClick={() => setOpen(false)}
+                  className={cn(
+                    "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
+                    isActive
+                      ? "bg-sidebar-accent text-sidebar-accent-foreground"
+                      : "text-sidebar-foreground/70 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground",
+                  )}
+                >
+                  <item.icon className="h-5 w-5" />
+                  {item.name}
+                </Link>
+              );
+            })}
+          </AdminOnly>
+
+          {/* Bottom items */}
           {bottomItems.map((item) => {
             const isActive = pathname === item.href;
             return (

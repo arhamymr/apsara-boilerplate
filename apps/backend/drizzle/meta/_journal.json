@@ -8,6 +8,13 @@
       "when": 1770371795136,
       "tag": "0000_perfect_punisher",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1770714884895,
+      "tag": "0001_jittery_gambit",
+      "breakpoints": true
     }
   ]
 }

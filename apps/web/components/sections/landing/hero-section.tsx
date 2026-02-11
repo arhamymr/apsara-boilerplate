@@ -15,7 +15,7 @@ export function HeroSection() {
           <Card className="w-full">
             <CardContent className="p-8 md:p-12 text-center max-w-4xl mx-auto">
               <h1 className="text-4xl text-foreground md:text-6xl lg:text-7xl">
-                Web Development Boilerplate
+                App Development Boilerplate
               </h1>
               <p className="mt-6 text-sm leading-8 text-muted-foreground md:text-xl md:leading-9">
                 A comprehensive modern web application template built with
