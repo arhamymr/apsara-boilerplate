@@ -9,7 +9,7 @@ import { Label } from "@workspace/ui/components/label";
 import { Checkbox } from "@workspace/ui/components/checkbox";
 import { Alert, AlertDescription } from "@workspace/ui/components/alert";
 import { Loader2, AlertCircle, Eye, EyeOff } from "lucide-react";
-import { authClient } from "@/lib/auth/auth-client";
+import { authClient } from " @/lib/auth-client";
 
 export interface EmailPasswordLoginFormProps {
   onSubmit?: (

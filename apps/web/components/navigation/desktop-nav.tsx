@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@workspace/ui/components/button";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Github, User, LogOut } from "lucide-react";
-import { useSession, authClient } from "@/lib/auth/auth-client";
+import { useSession, authClient } from "@/lib/auth-client";
 import {
   DropdownMenu,
   DropdownMenuContent,

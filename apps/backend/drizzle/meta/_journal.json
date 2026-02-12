@@ -15,6 +15,13 @@
       "when": 1770714884895,
       "tag": "0001_jittery_gambit",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1770813363838,
+      "tag": "0002_petite_prodigy",
+      "breakpoints": true
     }
   ]
 }

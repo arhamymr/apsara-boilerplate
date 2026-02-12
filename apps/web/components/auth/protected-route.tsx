@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { useAuthSessionWithRoles } from "@/lib/auth/auth-client";
+import { useAuthSessionWithRoles } from " @/lib/auth-client";
 import { useRouter } from "next/navigation";
 
 interface ProtectedRouteProps {

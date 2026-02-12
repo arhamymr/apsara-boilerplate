@@ -9,6 +9,7 @@ import {
 } from "@workspace/ui/components/table";
 import { Badge } from "@workspace/ui/components/badge";
 import { AttributeAssigner } from "./attribute-assigner";
+import { UserRowActions } from "./user-row-actions";
 
 interface Attribute {
   id: string;
@@ -38,12 +39,20 @@ interface UserTableProps {
     }
   >;
   onAssignAttribute: (userId: string, attributeName: string) => void;
+  onViewDetails?: (user: User) => void;
+  onVerifyEmail?: (user: User) => void;
+  onUnverifyEmail?: (user: User) => void;
+  onDeleteUser?: (user: User) => void;
 }
 
 export function UserTable({
   users,
   attributeDescriptions,
   onAssignAttribute,
+  onViewDetails,
+  onVerifyEmail,
+  onUnverifyEmail,
+  onDeleteUser,
 }: UserTableProps) {
   return (
     <Table>
@@ -52,7 +61,8 @@ export function UserTable({
           <TableHead>Name</TableHead>
           <TableHead>Email</TableHead>
           <TableHead>Attributes</TableHead>
-          <TableHead>Actions</TableHead>
+          <TableHead>Created</TableHead>
+          <TableHead className="text-right">Actions</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -86,11 +96,26 @@ export function UserTable({
               </div>
             </TableCell>
             <TableCell>
-              <AttributeAssigner
-                user={user}
-                attributeDescriptions={attributeDescriptions}
-                onAssignAttribute={onAssignAttribute}
-              />
+              {(() => {
+                const d = new Date(user.createdAt as any);
+                return isNaN(d.getTime()) ? "-" : d.toLocaleDateString();
+              })()}
+            </TableCell>
+            <TableCell className="text-right">
+              <div className="flex items-center justify-end gap-2">
+                <AttributeAssigner
+                  user={user}
+                  attributeDescriptions={attributeDescriptions}
+                  onAssignAttribute={onAssignAttribute}
+                />
+                <UserRowActions
+                  user={user}
+                  onViewDetails={onViewDetails ? (u) => onViewDetails(u as any) : undefined}
+                  onVerifyEmail={onVerifyEmail ? (u) => onVerifyEmail(u as any) : undefined}
+                  onUnverifyEmail={onUnverifyEmail ? (u) => onUnverifyEmail(u as any) : undefined}
+                  onDeleteUser={onDeleteUser ? (u) => onDeleteUser(u as any) : undefined}
+                />
+              </div>
             </TableCell>
           </TableRow>
         ))}

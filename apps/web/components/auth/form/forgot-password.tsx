@@ -6,7 +6,7 @@ import { Button } from "@workspace/ui/components/button";
 import { Input } from "@workspace/ui/components/input";
 import { Label } from "@workspace/ui/components/label";
 import { Loader2, ArrowLeft, CheckCircle } from "lucide-react";
-import { authClient } from "@/lib/auth/auth-client";
+import { authClient } from " @/lib/auth-client";
 
 export interface ForgotPasswordFormProps {
   onSubmit?: (email: string) => Promise<void>;

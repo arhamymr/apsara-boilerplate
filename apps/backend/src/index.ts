@@ -19,7 +19,7 @@ app.on(["POST", "GET"], "/api/auth/**", (c) => auth.handler(c.req.raw));
 const PORT = 2222;
 
 console.log(`✅ Backend configured on port ${PORT}`);
-console.log(`📡 Health check: http://localhost:${PORT}/health`);
+console.log(`📡 Health check: http://localhost:${PORT}`);
 
 export default {
   port: PORT,
