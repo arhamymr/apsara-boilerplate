@@ -9,10 +9,10 @@ import {
   $isRangeSelection,
   $createParagraphNode,
 } from "lexical"
+import { $setBlocksType } from "@lexical/selection"
 import { INSERT_UNORDERED_LIST_COMMAND, INSERT_ORDERED_LIST_COMMAND, REMOVE_LIST_COMMAND } from "@lexical/list"
 import { TOGGLE_LINK_COMMAND } from "@lexical/link"
 import { $createHeadingNode, type HeadingTagType } from "@lexical/rich-text"
-import { $setBlocksType } from "@lexical/selection"
 
 import { Button } from "@workspace/ui/components/button"
 import { cn } from "@workspace/ui/lib/utils"

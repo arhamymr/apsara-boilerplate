@@ -4,6 +4,19 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+overrides:
+  lexical: 0.15.0
+  '@lexical/react': 0.15.0
+  '@lexical/rich-text': 0.15.0
+  '@lexical/list': 0.15.0
+  '@lexical/link': 0.15.0
+  '@lexical/code': 0.15.0
+  '@lexical/markdown': 0.15.0
+  '@lexical/history': 0.15.0
+  '@lexical/utils': 0.15.0
+  '@lexical/html': 0.15.0
+  '@lexical/selection': 0.15.0
+
 importers:
 
   .:
@@ -386,34 +399,34 @@ importers:
         specifier: ^3.10.0
         version: 3.10.0(react-hook-form@7.69.0(react@19.2.0))
       '@lexical/code':
-        specifier: ^0.15.0
+        specifier: 0.15.0
         version: 0.15.0
       '@lexical/history':
-        specifier: ^0.15.0
+        specifier: 0.15.0
         version: 0.15.0
       '@lexical/html':
-        specifier: ^0.15.0
+        specifier: 0.15.0
         version: 0.15.0
       '@lexical/link':
-        specifier: ^0.15.0
+        specifier: 0.15.0
         version: 0.15.0
       '@lexical/list':
-        specifier: ^0.15.0
+        specifier: 0.15.0
         version: 0.15.0
       '@lexical/markdown':
-        specifier: ^0.15.0
+        specifier: 0.15.0
         version: 0.15.0
       '@lexical/react':
-        specifier: ^0.15.0
+        specifier: 0.15.0
         version: 0.15.0(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(yjs@13.6.29)
       '@lexical/rich-text':
-        specifier: ^0.15.0
+        specifier: 0.15.0
         version: 0.15.0
       '@lexical/selection':
-        specifier: ^0.40.0
-        version: 0.40.0
+        specifier: 0.15.0
+        version: 0.15.0
       '@lexical/utils':
-        specifier: ^0.15.0
+        specifier: 0.15.0
         version: 0.15.0
       '@radix-ui/react-slot':
         specifier: ^1.2.3
@@ -437,7 +450,7 @@ importers:
         specifier: ^1.4.2
         version: 1.4.2(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       lexical:
-        specifier: ^0.15.0
+        specifier: 0.15.0
         version: 0.15.0
       lucide-react:
         specifier: ^0.475.0
@@ -1637,9 +1650,6 @@ packages:
 
   '@lexical/selection@0.15.0':
     resolution: {integrity: sha512-S+AQC6eJiQYSa5zOPuecN85prCT0Bcb8miOdJaE17Zh+vgdUH5gk9I0tEBeG5T7tkSpq6lFiEqs2FZSfaHflbQ==}
-
-  '@lexical/selection@0.40.0':
-    resolution: {integrity: sha512-iFwZufMlIx9fZ+K3NQip9oxoHzuP+V9rVdkLnfUWC7aO4HNxVPSryEfUnbAs+F5xlOzyVHsu7Xa+CMHfIL8/gQ==}
 
   '@lexical/table@0.15.0':
     resolution: {integrity: sha512-3IRBg8IoIHetqKozRQbJQ2aPyG0ziXZ+lc8TOIAGs6METW/wxntaV+rTNrODanKAgvk2iJTIyfFkYjsqS9+VFg==}
@@ -6012,9 +6022,6 @@ packages:
   lexical@0.15.0:
     resolution: {integrity: sha512-/7HrPAmtgsc1F+qpv5bFwoQZ6CbH/w3mPPL2AW5P75/QYrqKz4bhvJrc2jozIX0GxtuT/YUYT7w+1sZMtUWbOg==}
 
-  lexical@0.40.0:
-    resolution: {integrity: sha512-wNvd/AY13h/QJYvx565M/FSdRjy0l99W5/MFA2x+mbK3KnKa5BifZbHZ1J4/YssCkdyZhSlLwFkyDaYi7l2Dsw==}
-
   lib0@0.2.117:
     resolution: {integrity: sha512-DeXj9X5xDCjgKLU/7RR+/HQEVzuuEUiwldwOGsHK/sfAfELGWEyTcf0x+uOvCvK3O2zPmZePXWL85vtia6GyZw==}
     engines: {node: '>=16'}
@@ -6022,7 +6029,6 @@ packages:
 
   libsql@0.5.22:
     resolution: {integrity: sha512-NscWthMQt7fpU8lqd7LXMvT9pi+KhhmTHAJWUB/Lj6MWa0MKFv0F2V4C6WKKpjCVZl0VwcDz4nOI3CyaT1DDiA==}
-    cpu: [x64, arm64, wasm32, arm]
     os: [darwin, linux, win32]
 
   lightningcss-android-arm64@1.30.2:
@@ -8806,10 +8812,6 @@ snapshots:
   '@lexical/selection@0.15.0':
     dependencies:
       lexical: 0.15.0
-
-  '@lexical/selection@0.40.0':
-    dependencies:
-      lexical: 0.40.0
 
   '@lexical/table@0.15.0':
     dependencies:
@@ -14126,8 +14128,6 @@ snapshots:
       type-check: 0.4.0
 
   lexical@0.15.0: {}
-
-  lexical@0.40.0: {}
 
   lib0@0.2.117:
     dependencies:

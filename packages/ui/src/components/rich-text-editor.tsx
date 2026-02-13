@@ -8,7 +8,6 @@ import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin"
 import { ListPlugin } from "@lexical/react/LexicalListPlugin"
 import { LinkPlugin } from "@lexical/react/LexicalLinkPlugin"
 import { MarkdownShortcutPlugin } from "@lexical/react/LexicalMarkdownShortcutPlugin"
-import { CodeHighlightPlugin } from "@lexical/react/LexicalCodeHighlightPlugin"
 import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin"
 import LexicalErrorBoundary from "@lexical/react/LexicalErrorBoundary"
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext"
@@ -22,8 +21,9 @@ import type { LexicalEditor } from "lexical"
 import { TRANSFORMERS } from "@lexical/markdown"
 
 import { cn } from "@workspace/ui/lib/utils"
-import { richTextEditorTheme } from "@workspace/ui/components/rich-text-editor-theme"
+import { richTextEditorTheme } from "@workspace/ui/lib/rich-text-editor-theme"
 import { RichTextToolbar } from "@workspace/ui/components/rich-text-toolbar"
+import { CodeHighlightingPlugin } from "@workspace/ui/components/code-highlighting-plugin"
 import {
   editorStateFromHTML,
   editorStateFromJSON,
@@ -121,7 +121,7 @@ export function RichTextEditor({
       {toolbar && (
         <RichTextToolbar className="border-input bg-background" />
       )}
-      <div className={cn("border rounded-md bg-transparent", disabled && "opacity-90")}>
+      <div className={cn("border rounded-md bg-transparent", disabled && "opacity-90")}>        
         <LexicalComposer initialConfig={initialConfig}>
           <EditableController disabled={disabled} />
           <ApplyValue value={value} format={format} />
@@ -133,13 +133,13 @@ export function RichTextEditor({
               />
             }
             placeholder={<div className="px-3 py-2 text-muted-foreground select-none">{placeholder}</div>}
-            ErrorBoundary={LexicalErrorBoundary}
+            ErrorBoundary={LexicalErrorBoundary as any}
           />
           <HistoryPlugin />
           <ListPlugin />
           <LinkPlugin />
           <MarkdownShortcutPlugin transformers={TRANSFORMERS} />
-          <CodeHighlightPlugin />
+          <CodeHighlightingPlugin />
           <OnChangePlugin
             onChange={(editorState, editor) => {
               if (!onChange) return
