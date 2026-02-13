@@ -1,6 +1,6 @@
 # Apsara Boilerplate
 
-A comprehensive modern web application template built with Next.js 16, React 19, and TypeScript. This monorepo includes a production-ready frontend, backend API, AI agent integration, and a shared UI component library.
+A comprehensive modern web application template built with Next.js 16, React 19, and TypeScript. This monorepo includes a production-ready frontend, backend API, AI agent integration, a Rust backend boilerplate, and a shared UI component library.
 
 ## Features
 
@@ -12,6 +12,7 @@ A comprehensive modern web application template built with Next.js 16, React 19,
 - **Theme System** - Dark/light mode with next-themes
 - **Backend API** - Hono server for fast API endpoints
 - **AI Integration** - Mastra AI agent framework
+- **Rust Boilerplate** - Cargo-based Rust workspace integrated with Turborepo
 - **Authentication** - Complete auth flow with login/register
 - **Tailwind CSS v4** - Utility-first styling
 
@@ -22,7 +23,8 @@ apsara-devkit/
 ├── apps/
 │   ├── web/          # Next.js frontend (port 1111)
 │   ├── backend/      # Hono API server
-│   └── ai/           # Mastra AI agents
+│   ├── ai/           # Mastra AI agents
+│   └── rust-backend/ # Rust backend (Cargo) — minimal boilerplate
 ├── packages/
 │   ├── ui/           # Shared UI component library
 │   ├── eslint-config/# ESLint configuration
@@ -38,6 +40,7 @@ apsara-devkit/
 
 - Node.js 20 or higher
 - pnpm 10.x
+- For Rust backend: Rust toolchain via `rustup` (includes `cargo`), optional `clippy` and `rustfmt`
 
 ### Installation
 
@@ -48,7 +51,7 @@ pnpm install
 # Build all packages
 pnpm build
 
-# Start development servers
+# Start development servers (all workspaces)
 pnpm dev
 ```
 
@@ -76,7 +79,7 @@ pnpm --filter web typecheck # Run TypeScript check
 ### Backend (Hono)
 
 ```bash
-pnpm --filter backend dev  # Start API server
+pnpm --filter backend dev   # Start API server
 pnpm --filter backend build # Build for production
 pnpm --filter backend start # Start production server
 ```
@@ -88,11 +91,79 @@ pnpm --filter ai dev       # Start AI agent server
 pnpm --filter ai build     # Build for production
 ```
 
-### UI Package
+### Rust Backend (Cargo)
+
+The Rust backend is a minimal boilerplate integrated into the Turborepo via `pnpm` workspace scripts. It uses Cargo under the hood.
 
 ```bash
-pnpm --filter @workspace/ui lint
+# Start Rust backend in dev mode (cargo run)
+pnpm --filter rust-backend dev
+
+# Build Rust backend (cargo build)
+pnpm --filter rust-backend build
+
+# Lint Rust backend (cargo clippy)
+pnpm --filter rust-backend lint
+
+# Test Rust backend (cargo test)
+pnpm --filter rust-backend test
 ```
+
+Notes:
+- The Rust workspace is defined in `apps/rust-backend` with a `Cargo.toml` and a minimal `src/main.rs`.
+- A `package.json` is added to `apps/rust-backend` to expose `dev`, `build`, `lint`, and `test` scripts for Turborepo.
+- `turbo.json` outputs include `target/**` so Cargo build artifacts can be cached in Turbo build pipelines.
+
+## Rust Boilerplate Details
+
+The Rust backend currently provides a starter binary that prints an initialization message. You can extend this to a web service (e.g., using `axum`, `actix-web`, or `warp`).
+
+Directory layout:
+
+```
+apps/rust-backend/
+├── Cargo.toml
+└── src/
+    └── main.rs
+```
+
+Key files:
+- `apps/rust-backend/Cargo.toml` — Rust package manifest
+- `apps/rust-backend/src/main.rs` — Entry point printing a startup message
+- `apps/rust-backend/package.json` — pnpm/Turborepo bridge that maps Turbo tasks to Cargo commands
+
+Script mapping:
+- `dev` → `cargo run`
+- `build` → `cargo build`
+- `lint` → `cargo clippy`
+- `test` → `cargo test`
+
+### Extend to a Web Server (optional)
+
+To turn this into a web server, add dependencies to `Cargo.toml` and change `main.rs` accordingly. Example (Axum):
+
+```toml
+# Cargo.toml
+[dependencies]
+axum = "0.7"
+tokio = { version = "1", features = ["rt-multi-thread", "macros"] }
+```
+
+```rust
+// src/main.rs
+use axum::{routing::get, Router};
+use std::net::SocketAddr;
+
+#[tokio::main]
+async fn main() {
+    let app = Router::new().route("/", get(|| async { "Hello from Rust backend" }));
+    let addr: SocketAddr = "0.0.0.0:4000".parse().unwrap();
+    println!("Listening on {}", addr);
+    axum::Server::bind(&addr).serve(app.into_make_service()).await.unwrap();
+}
+```
+
+Then you can run `pnpm --filter rust-backend dev` and visit `http://localhost:4000`.
 
 ## Adding Components
 
@@ -409,6 +480,7 @@ docker compose up -d web
 - **Backend**: Hono with Drizzle ORM
 - **AI**: Mastra with Node.js >= 22.13.0 requirement
 - **UI Package**: Shared component library with workspace protocol
+- **Rust**: Cargo-based backend integrated with Turborepo
 
 ## Contributing
 
