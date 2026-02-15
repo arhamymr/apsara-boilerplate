@@ -1,6 +1,4 @@
-import type { EditorThemeClasses } from "lexical"
-
-export const richTextEditorTheme: EditorThemeClasses = {
+export const richTextEditorTheme = {
   paragraph: "leading-7 my-2",
   quote:
     "border-l-2 border-input pl-3 my-3 italic text-muted-foreground",

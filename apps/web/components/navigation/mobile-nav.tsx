@@ -12,7 +12,7 @@ import {
 } from "@workspace/ui/components/sheet";
 import { Menu, X, Github, User, LogOut } from "lucide-react";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { useSession, authClient } from " @/lib/auth-client";
+import { useSession, authClient } from "@/lib/auth-client";
 import {
   Avatar,
   AvatarFallback,
@@ -27,7 +27,9 @@ import {
   DropdownMenuTrigger,
 } from "@workspace/ui/components/dropdown-menu";
 
-const navItems: { name: string; href: string }[] = [];
+const navItems: { name: string; href: string }[] = [
+  { name: "Docs", href: "/docs" },
+];
 
 export function MobileNav() {
   const pathname = usePathname();

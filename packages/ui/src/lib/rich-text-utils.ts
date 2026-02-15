@@ -7,6 +7,12 @@ export type LexicalSerializedEditorState = unknown
 export function editorStateFromHTML(html: string) {
   return (editor: LexicalEditor) => {
     editor.update(() => {
+      // Guard against SSR where DOMParser is not available
+      if (typeof window === "undefined" || typeof DOMParser === "undefined") {
+        const root = $getRoot()
+        root.clear()
+        return
+      }
       const parser = new DOMParser()
       const dom = parser.parseFromString(html, "text/html")
       const nodes = $generateNodesFromDOM(editor, dom)

@@ -7,6 +7,8 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  // Ensure TS from external workspace packages is transpiled
+  transpilePackages: ["@workspace/ui"],
 };
-
+ 
 export default nextConfig;

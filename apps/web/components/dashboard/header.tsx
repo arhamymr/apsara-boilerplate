@@ -16,7 +16,7 @@ import {
   DropdownMenuTrigger,
 } from "@workspace/ui/components/dropdown-menu";
 import { Bell, Search, Settings, User, LogOut } from "lucide-react";
-import { authClient, useSession } from " @/lib/auth-client";
+import { authClient, useSession } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 
 export function DashboardHeader() {

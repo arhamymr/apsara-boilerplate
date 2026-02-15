@@ -7,7 +7,7 @@ import { Input } from "@workspace/ui/components/input";
 import { Label } from "@workspace/ui/components/label";
 import { Alert, AlertDescription } from "@workspace/ui/components/alert";
 import { Loader2, AlertCircle, CheckCircle, Eye, EyeOff } from "lucide-react";
-import { authClient } from " @/lib/auth-client";
+import { authClient } from "@/lib/auth-client";
 import { useRouter, useSearchParams } from "next/navigation";
 
 export interface ResetPasswordFormProps {

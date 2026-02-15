@@ -12,8 +12,8 @@ import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin"
 import LexicalErrorBoundary from "@lexical/react/LexicalErrorBoundary"
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext"
 
-import { HeadingNode } from "@lexical/rich-text"
-import { ListNode } from "@lexical/list"
+import { HeadingNode, QuoteNode } from "@lexical/rich-text"
+import { ListNode, ListItemNode } from "@lexical/list"
 import { LinkNode } from "@lexical/link"
 import { CodeNode, CodeHighlightNode } from "@lexical/code"
 
@@ -110,7 +110,7 @@ export function RichTextEditor({
         // eslint-disable-next-line no-console
         console.error("Lexical error:", error)
       },
-      nodes: [HeadingNode, ListNode, LinkNode, CodeNode, CodeHighlightNode],
+      nodes: [HeadingNode, QuoteNode, ListNode, ListItemNode, LinkNode, CodeNode, CodeHighlightNode],
       editorState: initialEditorState,
     }),
     [initialEditorState]
@@ -118,11 +118,11 @@ export function RichTextEditor({
 
   return (
     <div data-slot="rich-text-editor" className={cn("flex flex-col gap-2", className)}>
-      {toolbar && (
-        <RichTextToolbar className="border-input bg-background" />
-      )}
-      <div className={cn("border rounded-md bg-transparent", disabled && "opacity-90")}>        
+      <div className={cn("border rounded-md bg-transparent", disabled && "opacity-90")}>
         <LexicalComposer initialConfig={initialConfig}>
+          {toolbar && (
+            <RichTextToolbar className="border-input bg-background" />
+          )}
           <EditableController disabled={disabled} />
           <ApplyValue value={value} format={format} />
           <RichTextPlugin

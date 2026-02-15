@@ -1,8 +1,7 @@
-import type { EditorThemeClasses } from "lexical"
 
 // Tailwind v4 classnames following the repository's design tokens
 // Maps Lexical nodes/styles to CSS classes used by the editor
-export const richTextEditorTheme: EditorThemeClasses = {
+export const richTextEditorTheme = {
   paragraph: "leading-7 my-2",
   quote:
     "border-l-2 border-input pl-3 my-3 italic text-muted-foreground",

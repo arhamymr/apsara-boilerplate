@@ -1,30 +1,26 @@
 "use client";
 
 import * as React from "react";
-import { useAuthSessionWithRoles } from " @/lib/auth-client";
+import { useAuthSession } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
-  requireRole?: "admin" | "user";
   fallback?: React.ReactNode;
 }
 
 export function ProtectedRoute({
   children,
-  requireRole = "user",
   fallback = (
     <div className="flex items-center justify-center min-h-screen">
       <div className="text-center">
         <h2 className="text-xl font-semibold mb-2">Access Denied</h2>
-        <p className="text-gray-600">
-          You don't have permission to access this page.
-        </p>
+        <p className="text-gray-600">You don't have permission to access this page.</p>
       </div>
     </div>
   ),
 }: ProtectedRouteProps) {
-  const { isAuthenticated, hasRole, isLoading } = useAuthSessionWithRoles();
+  const { isAuthenticated, isLoading } = useAuthSession();
   const router = useRouter();
 
   if (isLoading) {
@@ -40,14 +36,10 @@ export function ProtectedRoute({
     return null;
   }
 
-  if (!hasRole(requireRole)) {
-    return fallback;
-  }
-
   return <>{children}</>;
 }
 
-// Simplified component for admin-only features
+// Alias components preserved for backward compatibility without role checks
 export function AdminOnly({
   children,
   fallback = null,
@@ -55,14 +47,9 @@ export function AdminOnly({
   children: React.ReactNode;
   fallback?: React.ReactNode;
 }) {
-  return (
-    <ProtectedRoute requireRole="admin" fallback={fallback}>
-      {children}
-    </ProtectedRoute>
-  );
+  return <ProtectedRoute fallback={fallback}>{children}</ProtectedRoute>;
 }
 
-// Simplified component for authenticated users
 export function AuthenticatedOnly({
   children,
   fallback = null,
@@ -70,9 +57,5 @@ export function AuthenticatedOnly({
   children: React.ReactNode;
   fallback?: React.ReactNode;
 }) {
-  return (
-    <ProtectedRoute requireRole="user" fallback={fallback}>
-      {children}
-    </ProtectedRoute>
-  );
+  return <ProtectedRoute fallback={fallback}>{children}</ProtectedRoute>;
 }

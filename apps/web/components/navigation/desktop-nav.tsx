@@ -22,7 +22,9 @@ import {
   AvatarImage,
 } from "@workspace/ui/components/avatar";
 
-const navItems: { name: string; href: string }[] = [];
+const navItems: { name: string; href: string }[] = [
+  { name: "Docs", href: "/docs" },
+];
 
 export function DesktopNav() {
   const pathname = usePathname();
@@ -42,28 +44,6 @@ export function DesktopNav() {
 
   return (
     <>
-      <nav className="hidden md:flex items-center gap-1">
-        {navItems.map((item) => {
-          const isActive =
-            pathname === item.href ||
-            (item.href !== "/" && pathname.startsWith(item.href));
-          return (
-            <Link
-              key={item.name}
-              href={item.href}
-              className={cn(
-                "px-3 py-2 text-sm font-medium rounded-md transition-colors",
-                isActive
-                  ? "text-foreground bg-secondary"
-                  : "text-muted-foreground hover:text-foreground hover:bg-secondary/50",
-              )}
-            >
-              {item.name}
-            </Link>
-          );
-        })}
-      </nav>
-
       <div className="hidden md:flex items-center gap-2">
         <Button variant="ghost" size="sm" asChild>
           <Link
@@ -72,6 +52,14 @@ export function DesktopNav() {
             rel="noopener noreferrer"
           >
             Github
+          </Link>
+        </Button>
+
+        <Button variant="ghost" size="sm" asChild>
+          <Link
+            href="/docs"
+          >
+            Docs
           </Link>
         </Button>
 
@@ -124,7 +112,7 @@ export function DesktopNav() {
             </DropdownMenu>
           </>
         ) : (
-          <Button asChild>
+          <Button size={"sm"} asChild>
             <Link href="/login">Sign in (Demo Feature)</Link>
           </Button>
         )}
