@@ -1,17 +1,20 @@
-use actix_web::{get, post, HttpResponse, Responder, App, HttpServer, web};
-use actix_cors::Cors;
-use actix_web::http::header;
-use actix_web_httpauth::middleware::HttpAuthentication;
-
-mod config;
-mod auth;
-mod middleware;
-mod routes;
-mod lib;
+use actix_web::{
+    get, 
+    dev::{ServiceRequest, ServiceResponse }, 
+    middleware::{from_fn, Next, Logger},  
+    post, 
+    HttpResponse, 
+    Responder, 
+    web,
+    Error,
+    body::MessageBody,
+};
+// use actix_cors::Cors;
+// use actix_web::http::header;
 
 #[get("/")]
 async fn hello() -> impl Responder {
-    HttpResponse::Ok().body("this is the rust backend")
+    HttpResponse::Ok().body("this is the rust backend edit")
 }
 
 #[post("/echo")]
@@ -23,43 +26,28 @@ async fn manual_hello() -> impl Responder {
     HttpResponse::Ok().body("Hey there!")
 }
 
+async fn my_middleware(
+    req: ServiceRequest,
+    next: Next<impl MessageBody>,
+) -> Result<ServiceResponse<impl MessageBody>, Error> {
+    print!("Incoming request: {} {}", req.method(), req.path());
+    next.call(req).await
+}
+
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    let cfg = config::get_config();
+    use actix_web::{App, HttpServer}; 
 
-    HttpServer::new(move || {
-        let cors = Cors::default()
-            .allowed_origin(&cfg.cors_allowed_origin)
-            .allowed_methods(vec!["GET", "POST", "PUT", "DELETE", "OPTIONS"])
-            .allowed_headers(vec![header::AUTHORIZATION, header::CONTENT_TYPE])
-            .supports_credentials();
-
-        let bearer = HttpAuthentication::bearer(middleware::auth::validator);
-
+    HttpServer::new(|| {
         App::new()
-            .wrap(cors)
-            .service(
-                web::scope("/api")
-                    // Public auth endpoints
-                    .service(
-                        web::scope("/auth")
-                            .service(routes::auth::login)
-                            .service(routes::auth::refresh)
-                            .service(routes::auth::logout),
-                    )
-                    // Protected endpoints under /api/** (including /api/me)
-                    .service(
-                        web::scope("")
-                            .wrap(bearer)
-                            .service(routes::auth::me)
-                            .service(routes::protected::health),
-                    ),
-            )
+            .wrap(from_fn(my_middleware))
+            .wrap(Logger::default())
+            .wrap(Logger::new("%a %{User-Agent}i"))
             .service(hello)
             .service(echo)
-            .route("/manual_hello", web::get().to(manual_hello))
+            .route("/hey", web::get().to(manual_hello))
     })
-    .bind(("127.0.0.1", cfg.server_port))?
+    .bind(("127.0.0.1", 8080))?
     .run()
     .await
 }

@@ -1,5 +1,5 @@
-import { UserManagementPage } from "@/components/dashboard/users/user-management-page";
+import { UserManagementPage as UserManagement } from "@/components/dashboard/users/user-management-page";
 
-export default function UserManagementPage() {
-  return <UserManagementPage />;
+export default function Page() {
+  return <UserManagement />;
 }
