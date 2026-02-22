@@ -1,38 +1,13 @@
 use actix_web::{
-    get, 
-    dev::{ServiceRequest, ServiceResponse }, 
-    middleware::{from_fn, Next, Logger},  
-    post, 
-    HttpResponse, 
-    Responder, 
-    web,
-    Error,
-    body::MessageBody,
+    middleware::Logger,
+    dev::{Service as _}, 
 };
-// use actix_cors::Cors;
-// use actix_web::http::header;
+use futures_util::future::FutureExt;
 
-#[get("/")]
-async fn hello() -> impl Responder {
-    HttpResponse::Ok().body("this is the rust backend edit")
-}
+mod handlers;
+mod middleware;
 
-#[post("/echo")]
-async fn echo(req_body: String) -> impl Responder {
-    HttpResponse::Ok().body(req_body)
-}
-
-async fn manual_hello() -> impl Responder {
-    HttpResponse::Ok().body("Hey there!")
-}
-
-async fn my_middleware(
-    req: ServiceRequest,
-    next: Next<impl MessageBody>,
-) -> Result<ServiceResponse<impl MessageBody>, Error> {
-    print!("Incoming request: {} {}", req.method(), req.path());
-    next.call(req).await
-}
+use crate::handlers::{auth, users};
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
@@ -40,14 +15,30 @@ async fn main() -> std::io::Result<()> {
 
     HttpServer::new(|| {
         App::new()
-            .wrap(from_fn(my_middleware))
-            .wrap(Logger::default())
-            .wrap(Logger::new("%a %{User-Agent}i"))
-            .service(hello)
-            .service(echo)
-            .route("/hey", web::get().to(manual_hello))
+            // this middleware example in rust 
+            .wrap_fn(|req, srv| {
+                println!("Incoming request: {} {}", req.method(), req.path());
+                srv.call(req).map(|res| {
+                    println!("Hi from response middleware!");
+                    res
+                })
+            }) 
+
+            
+
+            // Authentication and user management handlers
+            .service(auth::register)
+            .service(auth::login)
+            .service(auth::refresh)
+            .service(auth::logout)
+            .service(auth::logout_all)
+            .service(users::get_me)
+            .service(users::update_me)
+
+            // Another api
     })
-    .bind(("127.0.0.1", 8080))?
+    .bind(("127.0.0.1", 4444))?
     .run()
     .await
+
 }
