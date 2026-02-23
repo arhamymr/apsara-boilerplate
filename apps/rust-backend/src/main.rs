@@ -16,10 +16,6 @@ async fn main() -> std::io::Result<()> {
 
     // Intialize database connection using sea-orm and run migrations using refinery
 
-    
-
-
-
     HttpServer::new(|| {
         App::new()
             .wrap(Logger::default())
