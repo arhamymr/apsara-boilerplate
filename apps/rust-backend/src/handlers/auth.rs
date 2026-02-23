@@ -1,5 +1,8 @@
 use actix_web::{web, post, HttpResponse, Responder, Result};
 use serde::{Deserialize, Serialize};
+use sea_orm::DatabaseConnection;
+
+use validator::Validate;
 
 // POST /api/v1/auth/register
 // request example 
@@ -14,18 +17,24 @@ use serde::{Deserialize, Serialize};
 //      "message": "User registered successfully",
 // }
 
-#[derive(Deserialize, Debug, Serialize)]
+#[derive(Deserialize, Debug, Serialize, Validate)]
 struct RegisterRequest {
+    #[validate(length(min = 3, max = 50))]
     username: String,
+
     email: String,
     password: String,
     name: String,
 }
 
 #[post("/api/v1/auth/register")]
-pub async fn register(data: web::Json<RegisterRequest>) -> Result<impl Responder> {
+pub async fn register(data: web::Json<RegisterRequest>, db: web::Data<DatabaseConnection>) -> Result<impl Responder> {
+     // 🔥 jalankan validasi
+    data.validate().map_err(|e| {
+        actix_web::error::ErrorBadRequest(e)
+    })?;
+    
     println!("Registering user: {:?}", data);
-    let register_data = data.into_inner();
 
     Ok(web::Json(serde_json::json!({
         "message": "User registered successfully"
