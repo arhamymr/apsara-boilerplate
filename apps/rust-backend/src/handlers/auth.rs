@@ -1,4 +1,5 @@
-use actix_web::{post, HttpResponse, Responder};
+use actix_web::{web, post, HttpResponse, Responder, Result};
+use serde::{Deserialize, Serialize};
 
 // POST /api/v1/auth/register
 // request example 
@@ -13,9 +14,40 @@ use actix_web::{post, HttpResponse, Responder};
 //      "message": "User registered successfully",
 // }
 
+#[derive(Deserialize, Debug, Serialize)]
+struct RegisterRequest {
+    username: String,
+    email: String,
+    password: String,
+    name: String,
+}
+
 #[post("/api/v1/auth/register")]
-pub async fn register() -> impl Responder {
-    HttpResponse::Ok().body("User registered successfully")
+pub async fn register(data: web::Json<RegisterRequest>) -> Result<impl Responder> {
+    println!("Registering user: {:?}", data);
+    let register_data = data.into_inner();
+
+    Ok(web::Json(serde_json::json!({
+        "message": "User registered successfully"
+    })))
+}
+
+// Test for register handler
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use actix_web::{test, App};
+
+    #[actix_web::test]
+    async fn test_register() {
+        let app = test::init_service(App::new().service(register)).await;
+        let req = test::TestRequest::post()
+            .uri("/api/v1/auth/register")
+            .to_request();
+        let resp = test::call_service(&app, req).await;
+        assert!(resp.status().is_success());
+    }
 }
 
 

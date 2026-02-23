@@ -1,30 +1,29 @@
 use actix_web::{
-    middleware::Logger,
-    dev::{Service as _}, 
+    middleware::{Logger},
 };
-use futures_util::future::FutureExt;
+use env_logger::Env;
 
 mod handlers;
-mod middleware;
+mod middlewares;
 
 use crate::handlers::{auth, users};
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     use actix_web::{App, HttpServer}; 
+    // Initialize logger
+    env_logger::init_from_env(Env::default().default_filter_or("info"));
+
+    // Intialize database connection using sea-orm and run migrations using refinery
+
+    
+
+
 
     HttpServer::new(|| {
         App::new()
-            // this middleware example in rust 
-            .wrap_fn(|req, srv| {
-                println!("Incoming request: {} {}", req.method(), req.path());
-                srv.call(req).map(|res| {
-                    println!("Hi from response middleware!");
-                    res
-                })
-            }) 
-
-            
+            .wrap(Logger::default())
+            .wrap(Logger::new("%a %{User-Agent}i"))
 
             // Authentication and user management handlers
             .service(auth::register)
