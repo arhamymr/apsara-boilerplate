@@ -1,5 +1,5 @@
 use actix_web::{
-    middleware::{Logger},
+    middleware::{Logger, Compress},
     web
 };
 use env_logger::Env;
@@ -7,6 +7,8 @@ use env_logger::Env;
 mod handlers;
 mod middlewares;
 mod db;
+mod utils;
+mod entities;
 
 use crate::handlers::{auth, users};
 
@@ -25,6 +27,7 @@ async fn main() -> std::io::Result<()> {
     HttpServer::new(move || {
         App::new()
             .app_data(web::Data::new(db.clone()))
+            .wrap(Compress::default())
             .wrap(Logger::default())
             .wrap(Logger::new("%a %{User-Agent}i"))
 
@@ -35,7 +38,7 @@ async fn main() -> std::io::Result<()> {
             .service(auth::logout)
             .service(auth::logout_all)
             .service(users::get_me)
-            .service(users::update_me)
+            .service(users:: update_me)
 
             // Another API
 

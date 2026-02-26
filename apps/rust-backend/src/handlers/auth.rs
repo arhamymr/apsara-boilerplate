@@ -4,6 +4,8 @@ use sea_orm::DatabaseConnection;
 
 use validator::Validate;
 
+use crate::utils::errors::CustomError;
+
 // POST /api/v1/auth/register
 // request example 
 // {
@@ -22,17 +24,17 @@ struct RegisterRequest {
     #[validate(length(min = 3, max = 50))]
     username: String,
 
+    #[validate(email)]
     email: String,
+
+    
     password: String,
     name: String,
 }
 
 #[post("/api/v1/auth/register")]
 pub async fn register(data: web::Json<RegisterRequest>, db: web::Data<DatabaseConnection>) -> Result<impl Responder> {
-     // 🔥 jalankan validasi
-    data.validate().map_err(|e| {
-        actix_web::error::ErrorBadRequest(e)
-    })?;
+    data.validate().map_err(CustomError::Validation)?;
     
     println!("Registering user: {:?}", data);
 
