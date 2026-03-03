@@ -1,8 +1,7 @@
-
-use actix_web::{HttpResponse,ResponseError};
-use validator::ValidationErrors;
-use thiserror::Error;
+use actix_web::{HttpResponse, ResponseError};
 use sea_orm::DbErr;
+use thiserror::Error;
+use validator::ValidationErrors;
 
 #[derive(Debug, Error)]
 pub enum CustomError {
@@ -13,19 +12,23 @@ pub enum CustomError {
     Database(DbErr),
 
     #[error("internal server error")]
-    Internal(String)
+    Internal(String),
+
+    #[error("conflict error")]
+    Conflict(String),
+
+    #[error("Token error: {0}")]
+    Token(#[from] pasetors::errors::Error),
 }
 
 impl ResponseError for CustomError {
     fn error_response(&self) -> HttpResponse {
         match self {
-            CustomError::Validation(e) => {
-                HttpResponse::BadRequest().json(serde_json::json!({
-                    "status": "error",
-                    "message": "Validation failed",
-                    "errors": e,
-                }))
-            }
+            CustomError::Validation(e) => HttpResponse::BadRequest().json(serde_json::json!({
+                "status": "error",
+                "message": "Validation failed",
+                "errors": e,
+            })),
 
             CustomError::Database(e) => {
                 HttpResponse::InternalServerError().json(serde_json::json!({
@@ -41,6 +44,13 @@ impl ResponseError for CustomError {
                     "message": msg,
                 }))
             }
+
+            CustomError::Conflict(msg) => HttpResponse::Conflict().json(serde_json::json!({
+                "status": "error",
+                "message": msg,
+            })),
+
+            _ => HttpResponse::InternalServerError().finish(),
         }
     }
 }

@@ -9,13 +9,14 @@ mod middlewares;
 mod db;
 mod utils;
 mod entities;
+mod services;
 
 use crate::handlers::{auth, users};
 
 #[actix_web::main]
-async fn main() -> std::io::Result<()> {
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
     // load env
-    dotenvy::dotenv();
+    dotenvy::dotenv()?;
 
     use actix_web::{App, HttpServer}; 
     // Initialize logger
@@ -45,6 +46,8 @@ async fn main() -> std::io::Result<()> {
     })
     .bind(("127.0.0.1", 4444))?
     .run()
-    .await
+    .await?;
+
+    Ok(())
 
 }
