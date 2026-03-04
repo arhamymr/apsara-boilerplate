@@ -2632,6 +2632,7 @@ dependencies = [
  "ed25519-dalek",
  "env_logger",
  "futures-util",
+ "hex",
  "pasetors",
  "password-hash",
  "rand 0.8.5",

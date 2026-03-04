@@ -1,37 +1,55 @@
 use pasetors::{
-    claims::{Claims},
-    keys::{AsymmetricSecretKey}, 
-    public::sign,
-    version4::V4,
+    public, 
+    Public,
+    claims::{Claims, ClaimsValidationRules}, keys::{AsymmetricPublicKey, AsymmetricSecretKey}, public::sign, token::UntrustedToken, version4::V4
 };
 use std::env;
-use base64::{engine::general_purpose::STANDARD, Engine };
 
-use crate::utils::errors::CustomError;
+use crate::{entities::user::Model, utils::errors::CustomError};
 
 
 fn get_auth_secret_key() -> Result<AsymmetricSecretKey<V4>, CustomError> {
     let secret_key = env::var("ACCESS_PRIVATE_KEY").expect("Secret key not set");
+    let secret_key_byte = hex::decode(secret_key).unwrap();
 
-    let secret_key_byte = STANDARD
-    .decode(secret_key)
-    .map_err(|_| CustomError::Internal("Invalid base64 format".into()))?;
+    let secret = AsymmetricSecretKey::<V4>::from(&secret_key_byte)?;
 
-    println!("key length {}", &secret_key_byte.len());
+    Ok(secret)
+}
 
-    let secret_key = AsymmetricSecretKey::from(&secret_key_byte)?;
+fn get_auth_public_key() -> Result<AsymmetricPublicKey<V4>, CustomError> {
+    let public_key = env::var("ACCESS_PUBLIC_KEY").expect("Public key not set");
+    let public_key_byte = hex::decode(public_key).unwrap();
 
-    Ok(secret_key)
+    let public = AsymmetricPublicKey::<V4>::from(&public_key_byte)?;
+
+    Ok(public)
 }
 
 
-pub fn create_token() -> Result<String, CustomError> {
+pub fn create_token(user: &Model) -> Result<String, CustomError> {
     let secret_key = get_auth_secret_key()?;
-    // create claims 
-    let claims = Claims::new()?;
+
+    let mut claims = Claims::new()?;
+    claims.add_additional("email", user.email.clone())?;
+
+    println!("{:?}", user);
 
     // generate token
     let pub_token = sign(&secret_key, &claims, None, None)?;
 
     Ok(pub_token)
+}
+
+pub fn verify_token(token: &String) -> Result<Claims, CustomError> {
+    let public_key = get_auth_public_key()?;
+
+    let validation_rules = ClaimsValidationRules::new();
+    let untrusted_token = UntrustedToken::<Public,V4>::try_from(token)?;
+    let trusted_token = public::verify(&public_key, &untrusted_token, &validation_rules, None, None)?;
+
+    let claims = trusted_token.payload_claims().unwrap();
+
+    Ok(claims.clone())
+    
 }

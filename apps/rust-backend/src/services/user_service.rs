@@ -129,7 +129,7 @@ pub async fn do_login(
     println!("test here");
 
     // 3. Generate JWT/PASETO token
-    let token = match create_token() {
+    let token = match create_token(&user) {
         Ok(token) => token,
         Err(e) => {
             println!("Create token error: {}", e);
@@ -137,11 +137,6 @@ pub async fn do_login(
         }
     };
 
-    println!("test here2");
-    // 4. Return response with token
-
     transaction.commit().await.map_err(CustomError::Database)?;
-
-    println!("{}",&token);
     Ok(token)
 }
