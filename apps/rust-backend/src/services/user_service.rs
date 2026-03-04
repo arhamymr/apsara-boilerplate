@@ -95,7 +95,7 @@ pub struct LoginUserData {
 pub async fn do_login(
     data: LoginUserData,
     db: &DatabaseConnection,
-) -> Result<(String), CustomError> {
+) -> Result<String, CustomError> {
     let transaction = db.begin().await.map_err(CustomError::Database)?;
 
     let finded_user = user::Entity::find()
@@ -125,9 +125,7 @@ pub async fn do_login(
     if !is_valid {
         return Err(CustomError::Internal("Invalid credentials".to_string()));
     }
-
-    println!("test here");
-
+    
     // 3. Generate JWT/PASETO token
     let token = match create_token(&user) {
         Ok(token) => token,
