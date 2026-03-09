@@ -1,6 +1,6 @@
 # Apsara Boilerplate
 
-A comprehensive modern web application template built with Next.js 16, React 19, and TypeScript. This monorepo includes a production-ready frontend, backend API, AI agent integration, a Rust backend boilerplate, and a shared UI component library.
+A comprehensive modern web application template built with Next.js 16, React 19, and TypeScript. This monorepo includes a production-ready frontend, backend API, AI agent integration, and a shared UI component library.
 
 ## Features
 
@@ -12,7 +12,7 @@ A comprehensive modern web application template built with Next.js 16, React 19,
 - **Theme System** - Dark/light mode with next-themes
 - **Backend API** - Hono server for fast API endpoints
 - **AI Integration** - Mastra AI agent framework
-- **Rust Boilerplate** - Cargo-based Rust workspace integrated with Turborepo
+
 - **Authentication** - Complete auth flow with login/register
 - **Tailwind CSS v4** - Utility-first styling
 
@@ -23,8 +23,7 @@ apsara-devkit/
 ├── apps/
 │   ├── web/          # Next.js frontend (port 1111)
 │   ├── backend/      # Hono API server
-│   ├── ai/           # Mastra AI agents
-│   └── rust-backend/ # Rust backend (Cargo) — minimal boilerplate
+│   └── ai/           # Mastra AI agents
 ├── packages/
 │   ├── ui/           # Shared UI component library
 │   ├── eslint-config/# ESLint configuration
@@ -40,7 +39,6 @@ apsara-devkit/
 
 - Node.js 20 or higher
 - pnpm 10.x
-- For Rust backend: Rust toolchain via `rustup` (includes `cargo`), optional `clippy` and `rustfmt`
 
 ### Installation
 
