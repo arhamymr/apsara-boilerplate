@@ -55,6 +55,8 @@ export const auth = betterAuth({
   // plugins
   plugins: [
     openAPI(),
-    admin(),
+    admin({
+      adminUserIds: ["HJ0CZqCwNGRt3gPfhX89U4lpwE1LBPB4"]
+    }),
   ],
 });
