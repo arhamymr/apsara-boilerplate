@@ -8,15 +8,10 @@ import { Label } from "@workspace/ui/components/label";
 import { Checkbox } from "@workspace/ui/components/checkbox";
 import { Alert, AlertDescription } from "@workspace/ui/components/alert";
 import { Loader2, AlertCircle, Eye, EyeOff } from "lucide-react";
-import { authClient } from "@/lib/auth-client";
-import { useRouter } from "next/navigation";
+import { useRegister, type RegisterData } from "./hooks/use-register";
 
 export interface RegisterFormProps {
-  onSubmit?: (data: {
-    fullName: string;
-    email: string;
-    password: string;
-  }) => Promise<void>;
+  onSubmit?: (data: RegisterData) => Promise<void>;
   showTerms?: boolean;
   className?: string;
 }
@@ -26,17 +21,14 @@ export function RegisterForm({
   showTerms = true,
   className,
 }: RegisterFormProps) {
-  const [isLoading, setIsLoading] = React.useState(false);
-  const [error, setError] = React.useState<string | null>(null);
+  const { register, isLoading, error, clearError } = useRegister();
   const [acceptedTerms, setAcceptedTerms] = React.useState(false);
   const [showPassword, setShowPassword] = React.useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
-  const router = useRouter();
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setIsLoading(true);
-    setError(null);
+    clearError();
 
     const formData = new FormData(e.currentTarget);
     const fullName = formData.get("full-name") as string;
@@ -46,52 +38,24 @@ export function RegisterForm({
 
     // Validate password match
     if (password !== confirmPassword) {
-      setError("Passwords do not match");
-      setIsLoading(false);
       return;
     }
 
     // Validate password length
     if (password.length < 8) {
-      setError("Password must be at least 8 characters");
-      setIsLoading(false);
       return;
     }
 
-    const data = {
+    const data: RegisterData = {
       fullName,
       email,
       password,
     };
 
-    try {
-      if (onSubmit) {
-        await onSubmit(data);
-      } else {
-        // Use Better Auth sign up
-        await authClient.signUp.email(
-          {
-            email: data.email,
-            password: data.password,
-            name: data.fullName,
-          },
-          {
-            onRequest: () => {
-              setIsLoading(true);
-            },
-            onSuccess: () => {
-              router.push("/dashboard");
-            },
-            onError: (ctx) => {
-              setError(ctx.error.message);
-              setIsLoading(false);
-            },
-          },
-        );
-      }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "An error occurred");
-      setIsLoading(false);
+    if (onSubmit) {
+      await onSubmit(data);
+    } else {
+      await register(data);
     }
   }
 

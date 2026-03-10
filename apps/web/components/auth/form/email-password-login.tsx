@@ -2,14 +2,13 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { Button } from "@workspace/ui/components/button";
 import { Input } from "@workspace/ui/components/input";
 import { Label } from "@workspace/ui/components/label";
 import { Checkbox } from "@workspace/ui/components/checkbox";
 import { Alert, AlertDescription } from "@workspace/ui/components/alert";
 import { Loader2, AlertCircle, Eye, EyeOff } from "lucide-react";
-import { authClient } from "@/lib/auth-client";
+import { useLogin, type LoginData } from "./hooks/use-login";
 
 export interface EmailPasswordLoginFormProps {
   onSubmit?: (
@@ -32,52 +31,27 @@ export function EmailPasswordLoginForm({
   disabled,
   className,
 }: EmailPasswordLoginFormProps) {
-  const router = useRouter();
-  const [isLoading, setIsLoading] = React.useState(false);
-  const [error, setError] = React.useState<string | null>(null);
+  const { login, isLoading, error, clearError } = useLogin();
   const [remember, setRemember] = React.useState(false);
   const [showPassword, setShowPassword] = React.useState(false);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setIsLoading(true);
-    setError(null);
+    clearError();
 
     const formData = new FormData(e.currentTarget);
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
 
-    try {
-      if (onSubmit) {
-        await onSubmit(email, password, remember);
-      } else {
-        await authClient.signIn.email(
-          {
-            email,
-            password,
-            rememberMe: remember,
-          },
-          {
-            onRequest: () => {
-              setIsLoading(true);
-            },
-            onSuccess: () => {
-              setIsLoading(false);
-              // Navigate to redirect URL if provided
-              if (redirectTo) {
-                router.push(redirectTo);
-              }
-            },
-            onError: (ctx) => {
-              setError(ctx.error.message);
-              setIsLoading(false);
-            },
-          },
-        );
-      }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "An error occurred");
-      setIsLoading(false);
+    if (onSubmit) {
+      await onSubmit(email, password, remember);
+    } else {
+      const data: LoginData = {
+        email,
+        password,
+        rememberMe: remember,
+      };
+      await login(data, redirectTo);
     }
   }
 

@@ -6,7 +6,7 @@ import { Button } from "@workspace/ui/components/button";
 import { Input } from "@workspace/ui/components/input";
 import { Label } from "@workspace/ui/components/label";
 import { Loader2, ArrowLeft, CheckCircle } from "lucide-react";
-import { authClient } from "@/lib/auth-client";
+import { useForgotPassword } from "./hooks/use-forgot-password";
 
 export interface ForgotPasswordFormProps {
   onSubmit?: (email: string) => Promise<void>;
@@ -17,32 +17,18 @@ export function ForgotPasswordForm({
   onSubmit,
   className,
 }: ForgotPasswordFormProps) {
-  const [isLoading, setIsLoading] = React.useState(false);
-  const [isSubmitted, setIsSubmitted] = React.useState(false);
+  const { requestReset, isLoading, isSubmitted } = useForgotPassword();
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setIsLoading(true);
 
     const formData = new FormData(e.currentTarget);
-  const email = formData.get("email") as string
+    const email = formData.get("email") as string;
 
-    try {
-      if (onSubmit) {
-        await onSubmit(email);
-      } else {
-        // Use Better Auth forgot password
-        await authClient.requestPasswordReset({
-          email,
-          redirectTo: "/reset-password",
-        });
-      }
-      setIsSubmitted(true);
-    } catch (err) {
-      console.error("Password reset request failed:", err);
-      setIsSubmitted(true); // Still show success message for security
-    } finally {
-      setIsLoading(false);
+    if (onSubmit) {
+      await onSubmit(email);
+    } else {
+      await requestReset(email);
     }
   }
 

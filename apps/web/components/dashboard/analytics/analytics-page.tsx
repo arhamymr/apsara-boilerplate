@@ -1,8 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { RequireAttribute } from "@/lib/auth/require-attribute";
-import { ATTRIBUTE_TYPES } from "@/lib/auth/attribute-types";
 import { BarChart3, TrendingUp, Users, Download, Calendar } from "lucide-react";
 import { Button } from "@workspace/ui/components/button";
 import {
@@ -80,48 +78,46 @@ const recentActivity = [
 
 export function AnalyticsPage() {
   return (
-    <RequireAttribute attribute={ATTRIBUTE_TYPES.VIEW_ANALYTICS}>
-      <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl tracking-tight">Analytics</h1>
-            <p className="text-muted-foreground">
-              Monitor your application performance and usage
-            </p>
-          </div>
-          <div className="flex items-center gap-2">
-            <Button variant="outline">
-              <Calendar className="mr-2 h-4 w-4" />
-              Last 30 Days
-            </Button>
-            <Button>
-              <Download className="mr-2 h-4 w-4" />
-              Export Report
-            </Button>
-          </div>
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl tracking-tight">Analytics</h1>
+          <p className="text-muted-foreground">
+            Monitor your application performance and usage
+          </p>
         </div>
-
-        <MetricsGrid analyticsData={analyticsData} />
-
-        <div className="grid gap-4 md:grid-cols-2">
-          <ActivityOverview recentActivity={recentActivity} />
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Performance Metrics</CardTitle>
-              <CardDescription>Key performance indicators</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="h-[300px] flex items-center justify-center text-muted-foreground">
-                <BarChart3 className="h-16 w-16 opacity-20" />
-                <span className="ml-4">Chart visualization coming soon</span>
-              </div>
-            </CardContent>
-          </Card>
+        <div className="flex items-center gap-2">
+          <Button variant="outline">
+            <Calendar className="mr-2 h-4 w-4" />
+            Last 30 Days
+          </Button>
+          <Button>
+            <Download className="mr-2 h-4 w-4" />
+            Export Report
+          </Button>
         </div>
-
-        <UserBehaviorCard />
       </div>
-    </RequireAttribute>
+
+      <MetricsGrid analyticsData={analyticsData} />
+
+      <div className="grid gap-4 md:grid-cols-2">
+        <ActivityOverview recentActivity={recentActivity} />
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Performance Metrics</CardTitle>
+            <CardDescription>Key performance indicators</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="h-[300px] flex items-center justify-center text-muted-foreground">
+              <BarChart3 className="h-16 w-16 opacity-20" />
+              <span className="ml-4">Chart visualization coming soon</span>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      <UserBehaviorCard />
+    </div>
   );
 }

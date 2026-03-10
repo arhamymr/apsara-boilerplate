@@ -7,8 +7,8 @@ import { Input } from "@workspace/ui/components/input";
 import { Label } from "@workspace/ui/components/label";
 import { Alert, AlertDescription } from "@workspace/ui/components/alert";
 import { Loader2, AlertCircle, CheckCircle, Eye, EyeOff } from "lucide-react";
-import { authClient } from "@/lib/auth-client";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useResetPassword } from "./hooks/use-reset-password";
+import { useSearchParams } from "next/navigation";
 
 export interface ResetPasswordFormProps {
   onSubmit?: (password: string) => Promise<void>;
@@ -19,55 +19,36 @@ export function ResetPasswordForm({
   onSubmit,
   className,
 }: ResetPasswordFormProps) {
-  const [isLoading, setIsLoading] = React.useState(false);
-  const [error, setError] = React.useState<string | null>(null);
-  const [isSuccess, setIsSuccess] = React.useState(false);
+  const { resetPassword, isLoading, error, isSuccess, clearError } =
+    useResetPassword();
   const [showPassword, setShowPassword] = React.useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
-  const router = useRouter();
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setIsLoading(true);
-    setError(null);
+    clearError();
 
     const formData = new FormData(e.currentTarget);
     const password = formData.get("password") as string;
     const confirmPassword = formData.get("confirm-password") as string;
 
     if (password !== confirmPassword) {
-      setError("Passwords do not match");
-      setIsLoading(false);
       return;
     }
 
     if (password.length < 8) {
-      setError("Password must be at least 8 characters");
-      setIsLoading(false);
       return;
     }
 
-    try {
-      if (onSubmit) {
-        await onSubmit(password);
-      } else {
-        // Use Better Auth reset password
-        if (!token) {
-          throw new Error("Invalid reset token");
-        }
-
-        await authClient.resetPassword({
-          newPassword: password,
-          token,
-        });
+    if (onSubmit) {
+      await onSubmit(password);
+    } else {
+      if (!token) {
+        return;
       }
-      setIsSuccess(true);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "An error occurred");
-    } finally {
-      setIsLoading(false);
+      await resetPassword(password, token);
     }
   }
 

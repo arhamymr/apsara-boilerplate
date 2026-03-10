@@ -1,8 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { RequireAttribute } from "@/lib/auth/require-attribute";
-import { ATTRIBUTE_TYPES } from "@/lib/auth/attribute-types";
 import { Button } from "@workspace/ui/components/button";
 import { Lock } from "lucide-react";
 import { SettingsSectionCard } from "./settings-section-card";
@@ -187,29 +185,27 @@ const settingsSections = [
 
 export function SettingsPage() {
   return (
-    <RequireAttribute attribute={ATTRIBUTE_TYPES.SYSTEM_SETTINGS}>
-      <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl tracking-tight">Settings</h1>
-            <p className="text-muted-foreground">
-              Manage system configuration and preferences
-            </p>
-          </div>
-          <Button variant="outline">
-            <Lock className="mr-2 h-4 w-4" />
-            Export Configuration
-          </Button>
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl tracking-tight">Settings</h1>
+          <p className="text-muted-foreground">
+            Manage system configuration and preferences
+          </p>
         </div>
-
-        <div className="grid gap-6">
-          {settingsSections.map((section) => (
-            <SettingsSectionCard key={section.id} section={section} />
-          ))}
-        </div>
-
-        <SystemInfoCard />
+        <Button variant="outline">
+          <Lock className="mr-2 h-4 w-4" />
+          Export Configuration
+        </Button>
       </div>
-    </RequireAttribute>
+
+      <div className="grid gap-6">
+        {settingsSections.map((section) => (
+          <SettingsSectionCard key={section.id} section={section} />
+        ))}
+      </div>
+
+      <SystemInfoCard />
+    </div>
   );
 }

@@ -11,7 +11,6 @@
     "auth:docs": "open-cli http://localhost:2222/api/auth/reference"
   },
   "dependencies": {
-    "@getbrevo/brevo": "^3.0.1",
     "@hono/zod-validator": "^0.7.6",
     "@types/nodemailer": "^7.0.9",
     "better-auth": "1.4.18",
