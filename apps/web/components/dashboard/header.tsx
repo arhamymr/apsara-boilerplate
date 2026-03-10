@@ -1,7 +1,6 @@
 "use client";
 
 import { Button } from "@workspace/ui/components/button";
-import { Input } from "@workspace/ui/components/input";
 import {
   Avatar,
   AvatarFallback,
@@ -15,7 +14,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@workspace/ui/components/dropdown-menu";
-import { Bell, Search, Settings, User, LogOut } from "lucide-react";
+import { Bell, Settings, User, LogOut } from "lucide-react";
 import { authClient, useSession } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 
@@ -44,15 +43,6 @@ export function DashboardHeader() {
   return (
     <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b bg-background/80 backdrop-blur-xl px-4 md:px-6">
       <div className="flex-1 flex items-center gap-4 pl-12 lg:pl-0">
-        <form className="hidden md:flex flex-1 max-w-md">
-          <div className="relative w-full">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-            <Input
-              placeholder="Search..."
-              className="pl-9 bg-secondary/50 border-0"
-            />
-          </div>
-        </form>
       </div>
 
       <div className="flex items-center gap-2">

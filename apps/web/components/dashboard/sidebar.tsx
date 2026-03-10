@@ -26,6 +26,7 @@ import {
 } from "lucide-react";
 import { Badge } from "@workspace/ui/components/badge";
 import { AdminOnly } from "@/components/auth/protected-route";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 const sidebarItems = [
   { name: "Overview", href: "/dashboard", icon: LayoutDashboard },
@@ -137,6 +138,14 @@ export function DashboardSidebar() {
               </Link>
             );
           })}
+
+          {/* Theme toggle */}
+          <div className="mt-1 rounded-lg px-3 py-2.5">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium text-sidebar-foreground/70">Theme</span>
+              <ThemeToggle />
+            </div>
+          </div>
         </nav>
       </div>
     </div>
